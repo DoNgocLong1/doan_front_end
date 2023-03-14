@@ -1,5 +1,5 @@
-import breakPoints from "constants/breakpoint";
-import color from "utils/color";
+import breakPoints from "@/constants/breakpoint";
+import color from "@/utils/color";
 import styled from "styled-components";
 export const Container = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
-import color from "utils/color";
+import breakPoints from "@/constants/breakpoint";
+import color from "@/utils/color";
 import styled from "styled-components";
-import breakPoints from "constants/breakpoint";
 export const Container = styled.div`
   background-color: ${color.backgroundColor} !important;
   width: 100%;
