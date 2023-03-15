@@ -26,7 +26,7 @@ import {
   RateNumber,
   RateWrapper,
 } from "./ListItem.styled";
-interface IListItem {
+export interface IListItem {
   data?: IProductItem[];
   ItemPerRow?: number | string;
   ItemPerRowOnMobile?: number | string;

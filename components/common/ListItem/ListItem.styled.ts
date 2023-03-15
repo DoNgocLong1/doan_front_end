@@ -1,6 +1,7 @@
 import breakPoints from "@/constants/breakpoint";
 import color from "@/utils/color";
 import styled from "styled-components";
+import { IListItem } from "./ListItem";
 export const Container = styled.div`
   width: 100%;
   @media ${breakPoints.mobile} {
@@ -8,27 +9,27 @@ export const Container = styled.div`
     font-size: 6px;
   }
 `;
-export const ListItemWrapper = styled.div`
+export const ListItemWrapper = styled.div<IListItem>`
   margin: auto;
   display: grid;
   grid-template-columns: repeat(
-    ${(props: { ItemPerRow: number | string }) => props.ItemPerRow},
-    ${(props: { size: string }) => props.size}
+    ${(props) => props.ItemPerRow},
+    ${(props) => props.size}
   );
   row-gap: 2em;
   column-gap: 2em;
   @media ${breakPoints.tablet} {
     grid-template-columns: repeat(
-      ${(props: { ItemPerRowOnTablet: number | string }) =>
+      ${(props) =>
         props.ItemPerRowOnTablet},
-      ${(props: { size: string }) => props.size}
+      ${(props) => props.size}
     );
   }
   @media ${breakPoints.mobile} {
     grid-template-columns: repeat(
-      ${(props: { ItemPerRowOnMobile: number | string }) =>
+      ${(props) =>
         props.ItemPerRowOnMobile},
-      ${(props: { size: string }) => props.size}
+      ${(props) => props.size}
     );
   }
 `;
