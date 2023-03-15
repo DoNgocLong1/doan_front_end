@@ -1,10 +1,9 @@
 import { Rate } from "antd";
-import { productDetail } from "apiServices/productService";
-import Loading from "components/common/Loading/Loading";
+import { productDetail } from "@/apiServices/productService";
+import Loading from "@/components/common/Loading/Loading";
 import DOMPurify from "dompurify";
 import { useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { useSearchParams } from "react-router-dom";
 import {
   Container,
   ProductDetailWrapper,
@@ -22,14 +21,15 @@ import {
   GalleryImg,
   ProductDescription,
 } from "./ProductDetail.styled";
+import { useRouter } from "next/router";
 
 const ProductDetail = () => {
-  const [searchParams] = useSearchParams();
-  const params = Object.fromEntries([...searchParams]);
-  const desRef = useRef<HTMLDivElement>();
+  const router = useRouter();
+  const productId = router.query?.id || 0;
+  const desRef = useRef<any>();
   const { data, isLoading } = useQuery({
     queryKey: ["productDetail"],
-    queryFn: () => productDetail(+params.id),
+    queryFn: () => productDetail(+productId),
   });
   const productDetailData = data?.data.data;
   const [img, setImg] = useState<string>(

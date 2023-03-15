@@ -1,15 +1,14 @@
-import breakPoints from "constants/breakpoint";
+import breakPoints from "@/constants/breakpoint";
 import styled from "styled-components";
-import images from "assets/images";
-import { Link } from "react-router-dom";
-import color from "utils/color";
+import color from "@/utils/color";
 import { Form } from "antd";
+import images from "@/images";
 export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(${images.loginBackground});
+  background-image: url(${images.loginBackground.src});
   background-position: center;
   @media ${breakPoints.mobile} {
     padding: 0;
@@ -75,7 +74,7 @@ export const ButtonWrapper = styled(Form.Item)`
   display: flex;
   justify-content: center;
 `;
-export const ForgotPassword = styled(Link)`
+export const ForgotPassword = styled.a`
   font-size: 1em;
   text-decoration: underline;
   color: #474747;

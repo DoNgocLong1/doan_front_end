@@ -50,7 +50,7 @@ const SlideShow: React.FC = () => {
       <Carousel autoplay ref={carouselRef}>
         {slideShow.map((item: any, index: number) => (
           <div key={index}>
-            <img style={contentStyle} src={item.src} alt={"slide show"} />
+            <img style={contentStyle} src={item.src} alt="slide show" />
           </div>
         ))}
       </Carousel>

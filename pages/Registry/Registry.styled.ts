@@ -1,14 +1,14 @@
-import color from "utils/color";
+import color from "@/utils/color";
 import styled from "styled-components";
-import images from "assets/images";
 import { Form } from "antd";
-import breakPoints from "constants/breakpoint";
+import breakPoints from "@/constants/breakpoint";
+import images from "@/images";
 export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(${images.loginBackground});
+  background-image: url(${images.loginBackground.src});
   background-position: center;
   @media ${breakPoints.mobile} {
     padding: 0;

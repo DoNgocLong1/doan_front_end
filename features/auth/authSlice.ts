@@ -1,4 +1,4 @@
-import { RootState } from "app/store";
+import { RootState } from "@/app/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type User = {
   email: string;

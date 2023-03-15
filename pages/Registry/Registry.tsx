@@ -13,10 +13,10 @@ import {
   DingdingOutlined,
   LockOutlined,
 } from "@ant-design/icons/lib/icons";
-import { useNavigate } from "react-router-dom";
-import { instance } from "apiServices/instance";
+import { instance } from "@/apiServices/instance";
+import { useRouter } from "next/router";
 const Registry = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [error, setError] = useState<string[]>([]);
   const onFinish = async (values: any) => {
     const registryData = {
@@ -30,7 +30,7 @@ const Registry = () => {
       .post("register", registryData)
       .then((res) => {
         localStorage.setItem("token", res.data.data.data.token);
-        navigate("/");
+        router.push("/");
       })
       .catch((error) => {
         const errorValues = Object.values(error.response.data.data.messages);

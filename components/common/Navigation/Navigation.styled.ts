@@ -1,4 +1,4 @@
-import color from "utils/color";
+import color from "@/utils/color";
 import styled from "styled-components";
 export const Container = styled.div`
   background-color: ${color.backgroundColor} !important;

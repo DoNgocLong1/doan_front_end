@@ -1,6 +1,7 @@
-import { RootState } from "app/store";
+import { RootState } from "@/app/store";
+import { ICartList } from "@/types/cartType.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICartList } from "types/cartType.type";
+
 interface IInitialState {
   cartList: ICartList[];
   listLength: number;

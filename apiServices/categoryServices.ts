@@ -1,4 +1,4 @@
-import { instance } from "apiServices/instance";
+import { instance } from "./instance";
 export const fetchCategory = async () => {
   const data = await instance
     .get("get-categories")

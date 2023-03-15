@@ -1,8 +1,8 @@
-import { addItem, decreaseItem, removeItem } from "features/cart/cartSlice";
+import { addItem, decreaseItem, removeItem } from "@/features/cart/cartSlice";
 import { useDispatch } from "react-redux";
-import { selectCartList } from "features/cart/cartSlice";
+import { selectCartList } from "@/features/cart/cartSlice";
 import { useSelector } from "react-redux";
-import { CartItemType } from "types/cartType.type";
+import { CartItemType } from "@/types/cartType.type";
 const useCart = () => {
   const { cartList, totalPrice, listLength } = useSelector(selectCartList);
   const dispatch = useDispatch();

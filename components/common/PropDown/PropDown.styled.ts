@@ -1,4 +1,4 @@
-import breakPoints from "constants/breakpoint";
+import breakPoints from "@/constants/breakpoint";
 import styled from "styled-components";
 export const Container = styled.div`
   display: ${(props: { isShow: boolean }) => (props.isShow ? "block" : "none")};

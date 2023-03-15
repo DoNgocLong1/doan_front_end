@@ -1,6 +1,7 @@
+import color from "@/utils/color";
 import React from "react";
 import styled from "styled-components";
-import color from "utils/color";
+
 const Button = styled.button`
   background-color: initial;
   border: 0.3em solid ${color.whiteColor};

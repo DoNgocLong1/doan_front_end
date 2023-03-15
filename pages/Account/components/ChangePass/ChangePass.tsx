@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { changePassword } from "apiServices/userServices";
+import { changePassword } from "@/apiServices/userServices";
 
 const ChangePass = () => {
   interface IchangePasswordFormData {

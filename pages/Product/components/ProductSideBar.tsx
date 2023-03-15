@@ -10,11 +10,11 @@ import {
   SortDescendingOutlined,
 } from "@ant-design/icons";
 import { Menu, MenuProps, Slider } from "antd";
-import useCategory from "hooks/useCategory";
-import useProduct from "hooks/useProduct";
-import useUrlParams from "hooks/useUrlParams";
+import useCategory from "@/hooks/useCategory";
+import useProduct from "@/hooks/useProduct";
+import useUrlParams from "@/hooks/useUrlParams";
 import React, { useState } from "react";
-import { IdataCategory } from "types/productType.type";
+import { IdataCategory } from "@/types/productType.type";
 import {
   CategoriesContainer,
   CategoryIconWarper,

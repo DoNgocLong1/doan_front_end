@@ -12,11 +12,12 @@ import {
 } from "./Login.styled";
 import { UserOutlined } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons/lib/icons";
-import { useNavigate } from "react-router-dom";
-import { instance } from "apiServices/instance";
+import { instance } from "@/apiServices/instance";
+import { useRouter } from "next/router";
+import Link from "next/link";
 const Login = () => {
   const [error, setError] = useState<string>("");
-  const navigate = useNavigate();
+  const router = useRouter();
   const onFinish = async (values: any) => {
     const loginData: any = {
       email: values.username,
@@ -32,7 +33,7 @@ const Login = () => {
         }
         /* localStorage.setItem("token", res.data.data.data.token); */
         localStorage.setItem("user", JSON.stringify(res.data.userData));
-        navigate("/");
+        router.push("/");
       })
       .catch((e) => {
         console.log(e);
@@ -76,7 +77,8 @@ const Login = () => {
           </Form.Item>
           <LoginFeatureLogin>
             <ForgotPassword>Forgot password</ForgotPassword>
-            <Registry to="/registry">Registry</Registry>
+            <Link href="/registry"></Link>
+            <Registry>Registry</Registry>
           </LoginFeatureLogin>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           <ButtonWrapper name="submit" wrapperCol={{ offset: 8, span: 16 }}>

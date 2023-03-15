@@ -1,6 +1,6 @@
+import color from "@/utils/color";
 import { Empty } from "antd";
 import styled from "styled-components";
-import color from "utils/color";
 export const EmptyContainer = styled.div`
   justify-content: center;
   display: flex;
