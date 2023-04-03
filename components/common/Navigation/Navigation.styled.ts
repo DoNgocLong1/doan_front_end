@@ -48,4 +48,15 @@ export const Container = styled.div`
   .ant-select-selector {
     display: none;
   }
+  .ant-pagination-item-container .ant-pagination-item-ellipsis {
+    display: flex !important;
+    justify-content: center;
+    color: #fff !important;
+  }
+  .ant-pagination-item-link {
+    display: flex;
+    justify-content: center;
+    border: none !important;
+    height: fit-content;
+  }
 `;

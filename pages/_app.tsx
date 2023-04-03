@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       queries: {
         refetchOnWindowFocus: false,
         cacheTime: 1 * 60 * 60 * 1000, // cache for 1 day
-        retry: false,
+        retry: true,
       },
     },
   });

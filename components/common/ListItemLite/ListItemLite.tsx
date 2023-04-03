@@ -22,7 +22,11 @@ import { CloseOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import EmptyCart from "../EmptyCart/EmptyCart";
 import Link from "next/link";
 import useCart from "@/hooks/useCart";
+import { useSelector } from "react-redux";
+import { selectAuth } from "@/features/auth/authSlice";
+import { useRouter } from "next/router";
 const ListItemLite = () => {
+  const router = useRouter()
   const {
     handleAddItem,
     handleDecreaseItem,
@@ -31,7 +35,9 @@ const ListItemLite = () => {
     orderList,
     totalPrice,
   } = useCart();
+  const { isAuthenticated } = useSelector(selectAuth);
   const onOrder = async () => {
+    !isAuthenticated ? alert('you are not login yet') : router.push('/cart')
     /* const params: any = {
       user_id: 1,
       amount: totalPrice,
@@ -87,9 +93,7 @@ const ListItemLite = () => {
           <ItemFooterTitle>Total: </ItemFooterTitle>
           <ItemFooterContent> {totalPrice}$</ItemFooterContent>
         </ItemFooterWrapper>
-        <Link href="/cart">
-          <ItemFooterButton onClick={onOrder}>View cart</ItemFooterButton>
-        </Link>
+        <ItemFooterButton onClick={onOrder}>View cart</ItemFooterButton>
       </ItemFooter>
     </Container>
   );

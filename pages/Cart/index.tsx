@@ -32,7 +32,7 @@ import {
   TitleTh,
   TitleTr,
   TitleWrapper,
-} from "./Cart.styled";
+} from "../../styled/Cart.styled";
 import { DeleteOutlined } from "@ant-design/icons";
 import useCart from "@/hooks/useCart";
 import { instance } from "@/apiServices/instance";
@@ -46,6 +46,7 @@ const Cart = () => {
   let userData: any;
   if (typeof window !== 'undefined') {
     user = localStorage.getItem("user");
+    console.log(user)
     userData = JSON.parse(user || "");
   }
   const [appearSuccess, setAppearSuccess] = useState<boolean>(false);

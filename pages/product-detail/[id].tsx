@@ -20,31 +20,30 @@ import {
   GalleryWrapper,
   GalleryImg,
   ProductDescription,
-} from "./ProductDetail.styled";
+} from "../../styled/ProductDetail.styled";
 import { useRouter } from "next/router";
 
 const ProductDetail = () => {
   const router = useRouter();
-  const productId = router.query?.id || 0;
+  const productId: any = router.query?.id || '';
   const desRef = useRef<any>();
   const { data, isLoading } = useQuery({
     queryKey: ["productDetail"],
-    queryFn: () => productDetail(+productId),
+    queryFn: () => productDetail(productId),
   });
-  const productDetailData = data?.data.data;
-  const [img, setImg] = useState<string>(
+  const productDetailData = data?.data;
+  /* const [img, setImg] = useState<string>(
     productDetailData?.images[0]?.product_img
-  );
-  console.log(productDetailData);
-  console.log(desRef.current);
+  ); */
+  console.log(data?.data);
   if (isLoading) return <Loading />;
   if (!productDetailData) return null;
   return (
     <Container>
       <ProductDetailWrapper>
         <ProductGalleryWrapper>
-          <ProductMainImg src={img} />
-          <GalleryWrapper>
+          <ProductMainImg src="/" />
+          {/* <GalleryWrapper>
             {productDetailData?.images.map((item: any, index: number) => (
               <GalleryImg
                 onMouseOver={() => setImg(item.product_img)}
@@ -52,7 +51,7 @@ const ProductDetail = () => {
                 src={item.product_img}
               />
             ))}
-          </GalleryWrapper>
+          </GalleryWrapper> */}
         </ProductGalleryWrapper>
         <ProductInfoWrapper>
           <ProductName>{productDetailData.name}</ProductName>

@@ -1,3 +1,4 @@
+import { popularProduct } from './../apiServices/productService';
 import { fetchProduct, listProduct, minMax } from "@/apiServices/productService";
 import { IProductItem } from "@/types/productType.type";
 import { useRouter } from "next/router";
@@ -16,7 +17,7 @@ const useProduct = () => {
   });
   const popularProductQuery = useQuery({
     queryKey: ["popularProduct"],
-    queryFn: listProduct,
+    queryFn: popularProduct,
   });
   const minPrice = minMaxQuery.data?.data.data.min;
   const maxPrice = minMaxQuery.data?.data.data.max;

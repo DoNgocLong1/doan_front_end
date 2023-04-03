@@ -48,7 +48,7 @@ export const SearchWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
-export const FeatureWrapper = styled.ul`
+export const FeatureWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -60,7 +60,7 @@ export const FeatureWrapper = styled.ul`
     gap: 0.5em;
   }
 `;
-export const Feature = styled.li`
+export const Feature = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@ export const IconWrapper = styled.div`
     font-size: 1.5em;
   }
 `;
-export const FeatureLink = styled.a`
+export const FeatureLink = styled.div`
   color: inherit;
   text-decoration: none;
 `;

@@ -1,3 +1,4 @@
+import { logout, selectAuth } from "@/features/auth/authSlice";
 import { selectCartList } from "@/features/cart/cartSlice";
 import images from "@/images";
 import {
@@ -9,8 +10,8 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ListItemLite from "../common/ListItemLite/ListItemLite";
 import PropDown from "../common/PropDown/PropDown";
 import SearchItem from "../common/SearchItem/SearchItem";
@@ -33,18 +34,30 @@ import {
   UserImg,
 } from "./Header.styled";
 const Logout = () => {
+  const { isAuthenticated } = useSelector(selectAuth);
   const router = useRouter();
+  const dispatch = useDispatch();
   const handleLogout = async () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
+    dispatch(logout(!isAuthenticated));
     router.push("/");
   };
+  const [ image, setImage] = useState();
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+    const userData = localStorage.getItem('user') || ''
+    const image = JSON.parse(userData).image
+    console.log(image);
+    setImage(image)
+    }
+  }, [])
   const [show, setShow] = useState<boolean>(false);
-  const user = {};
   const userAvatar = "";
   return (
     <Feature>
       <UserImg
-        src={userAvatar}
+        src={image}
         onClick={() => {
           setShow((prev) => (prev ? false : true));
         }}
@@ -79,7 +92,7 @@ const Logout = () => {
 const Header = () => {
   const { listLength } = useSelector(selectCartList);
   const [show, setShow] = useState<boolean>(false);
-  const token = "token";
+  const { isAuthenticated } = useSelector(selectAuth);
   return (
     <Container>
       <Link href="/">
@@ -108,15 +121,17 @@ const Header = () => {
             <ListItemLite />
           </PropDown>
         </Feature>
-        {token ? (
+        {isAuthenticated ? (
           <Logout />
-        ) : (
-          <FeatureLink href="/login">
+        ) : (     
+          <FeatureLink>
             <Feature>
               <IconWrapper>
                 <UserOutlined />
               </IconWrapper>
-              <FeatureTitle>Login</FeatureTitle>
+              <Link href="/login">
+                <FeatureTitle>Login</FeatureTitle>
+              </Link>
             </Feature>
           </FeatureLink>
         )}
@@ -124,4 +139,5 @@ const Header = () => {
     </Container>
   );
 };
+
 export default Header;

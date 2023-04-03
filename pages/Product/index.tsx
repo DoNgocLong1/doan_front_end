@@ -1,8 +1,7 @@
 import ListItem from "@/components/common/ListItem/ListItem";
 import Loading from "@/components/common/Loading/Loading";
 import useProduct from "@/hooks/useProduct";
-import React, { useState } from "react";
-import ProductSideBar from "./components/ProductSideBar";
+import React, { useEffect, useState } from "react";
 import Navigation from "../../components/common/Navigation/Pagination";
 import {
   Banner,
@@ -13,12 +12,22 @@ import {
   Overlay,
   ProductContainer,
   SideBarContainer,
-} from "./Product.styled";
+} from "../../styled/Product.styled";
 import images from "@/images";
+import { useRouter } from "next/router";
+import ProductSideBar from "@/components/Product/ProductSideBar";
 
 const Product = () => {
   const { productData, totalItem, itemPerPage, productQuery } = useProduct();
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
+  const {query} = useRouter();
+  useEffect(() => {
+    const onScroll = () => {
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [query]);
   return (
     <Container>
       <Overlay isShow={showSideBar} />

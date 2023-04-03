@@ -4,6 +4,7 @@ import { CartItemType } from "@/types/cartType.type";
 import { IProductItem } from "@/types/productType.type";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Rate } from "antd";
+import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import Notification from "../Notification/Notification";
@@ -40,6 +41,7 @@ const ListItem = ({
   ItemPerRowOnTablet = "auto-fit",
   size = "minmax(25em, 1fr)",
 }: IListItem) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const handleAddItem = (payload: any): void => {
     const payloadData: CartItemType = {
@@ -50,6 +52,9 @@ const ListItem = ({
     };
     dispatch(addItem(payloadData));
   };
+  const handleSelectProduct = (id: number): void => {
+    router.push(`/product-detail/${id}`)
+  }
   return (
     <Container>
       <ListItemWrapper
@@ -63,7 +68,7 @@ const ListItem = ({
             {item.discount > 0 && <Discount>-{item.discount}%</Discount>}
             <ItemImageWrapper>
               <ItemImage
-                src={"/static/media/" /* + item.Image_Products.image || "" */}
+                src={ `data:image/webp;base64,${item.Image_Products[0]?.image.data}`}
                 alt={item.name}
               />
               <ProductActionWrapper>
@@ -75,7 +80,9 @@ const ListItem = ({
               </ProductActionWrapper>
             </ItemImageWrapper>
             <ItemType>{item.type}</ItemType>
-            <ItemName>
+            <ItemName
+              onClick={() => handleSelectProduct(item.id)}
+            >
               {item.name}
             </ItemName>
             <RateWrapper>

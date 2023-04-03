@@ -11,16 +11,16 @@ import {
   SidebarInfoWrapper,
   UserEmail,
   UserName,
-} from "./Account.styled";
+} from "../../styled/Account.styled";
 import { Button, DatePicker, Form, Input, Upload } from "antd";
-import ChangePass from "./components/ChangePass/ChangePass";
 import { PlusOutlined } from "@ant-design/icons";
 import { updateUserProfile } from "@/apiServices/userServices";
+import ChangePass from "@/components/Account/ChangePass/ChangePass";
 const Account = () => {
   const [isProfileComponent, setIsProfileComponent] = useState<boolean>(true);
   const onFinish = async (values: any) => {
     console.log(values.avatar);
-    const date = `${values.date?.$y}-${values.date?.$M + 1}-${values.date?.$D}`;
+    /* const date = `${values.date?.$y}-${values.date?.$M + 1}-${values.date?.$D}`;
     const formData = {
       name: values.username,
       phone: values.phoneNumber,
@@ -35,7 +35,7 @@ const Account = () => {
         Authorization: token ? `Bearer ${token}` : "",
       },
     };
-    updateUserProfile(formData, config);
+    updateUserProfile(formData, config); */
   };
   let user: any;
   let userData: any;

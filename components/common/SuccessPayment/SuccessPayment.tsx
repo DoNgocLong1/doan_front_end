@@ -47,9 +47,7 @@ const SuccessPayment = ({ isShow, setIsShow }: ISuccessPayment) => {
         subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
         extra={[
           <Link key="buy" href="/product">
-            <a>
-              <Button onClick={() => setIsShow(false)}>Buy Again</Button>
-            </a>
+            <Button onClick={() => setIsShow(false)}>Buy Again</Button>
           </Link>,
         ]}
       />

@@ -146,6 +146,7 @@ export const ItemWrapper = styled.div`
   border-radius: 1.5em;
   position: relative;
   z-index: 1;
+  //border: 2px solid #e7e765;
   .ant-rate {
     font-size: 1.5em;
   }

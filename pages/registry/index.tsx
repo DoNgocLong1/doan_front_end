@@ -6,7 +6,7 @@ import {
   RegistryTitle,
   ButtonWrapper,
   ErrorMessage,
-} from "./Registry.styled";
+} from "../../styled/Registry.styled";
 import { UserOutlined } from "@ant-design/icons";
 import {
   CopyOutlined,

@@ -5,6 +5,16 @@ const useUrlParams = () => {
   console.log(router.query);
   const transmissionParams = (key: string, value: any): void => {
     router.push({
+      pathname: pathname,
+      query: {
+        ...router.query,
+        [key]: String(value),
+        page: "1",
+      },
+    }, undefined, { scroll: false });
+  };
+  const transmissionPages = (key: string, value: any): void => {
+    router.push({
       pathname,
       query: {
         ...router.query,
@@ -24,12 +34,14 @@ const useUrlParams = () => {
         ...router.query,
         [key1]: String(value1),
         [key2]: String(value2),
+        page: "1",
       }
-    });
+    },undefined, { scroll: false });
   };
   return {
     pathname,
     transmissionParams,
+    transmissionPages,
     twoKeysTransmissionParams,
   };
 };

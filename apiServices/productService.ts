@@ -17,9 +17,18 @@ export const listProduct = async () => {
     });
   return data;
 };
-export const productDetail = async (id: number) => {
+export const popularProduct = async () => {
   const data = await instance
-    .get(`product/${id}`)
+    .get(`products/popular-product`)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const productDetail = async (id: string) => {
+  const data = await instance
+    .get(`products/product-detail`, {params: {id}})
     .then((response) => response)
     .catch((error) => {
       console.log(error);
@@ -29,6 +38,15 @@ export const productDetail = async (id: number) => {
 export const minMax = async () => {
   const data = await instance
     .get(`data-price`)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const createProduct = async (formData: any) => {
+  const data = await instance
+    .post(`products/create-product`, formData)
     .then((response) => response)
     .catch((error) => {
       console.log(error);

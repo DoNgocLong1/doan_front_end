@@ -9,13 +9,16 @@ import {
   Registry,
   ButtonWrapper,
   ErrorMessage,
-} from "./Login.styled";
+} from "../../styled/Login.styled";
 import { UserOutlined } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons/lib/icons";
 import { instance } from "@/apiServices/instance";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/features/auth/authSlice";
 const Login = () => {
+  const dispatch = useDispatch();
   const [error, setError] = useState<string>("");
   const router = useRouter();
   const onFinish = async (values: any) => {
@@ -26,14 +29,15 @@ const Login = () => {
     await instance
       .post("login", loginData)
       .then((res) => {
-        console.log(res);
+        console.log(res.data.token);
         if (res.data.errCode !== 0) {
           console.log("login failed");
           return;
         }
-        /* localStorage.setItem("token", res.data.data.data.token); */
+        localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.userData));
         router.push("/");
+        dispatch(loginSuccess(res.data.userData))
       })
       .catch((e) => {
         console.log(e);

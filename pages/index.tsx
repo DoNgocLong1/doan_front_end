@@ -18,7 +18,7 @@ import {
   PopularProductTitle,
   PopularProductWrapper,
   ShopNowButton,
-} from "./Home.styled";
+} from "../styled/Home.styled";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { IdataCategory } from "@/types/productType.type";
 import useCategory from "@/hooks/useCategory";
@@ -31,19 +31,16 @@ import SlideShow from "@/components/slideShow";
 
 const Home = () => {
   const categoryData: IdataCategory[] = useCategory();
+  const route = useRouter();
   const { popularProductData } = useProduct();
-/*   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const params = Object.fromEntries([...searchParams]);
   const handleGotoProductByCategory = (id: number) => {
-    navigate({
+    route.push({
       pathname: "/product",
-      search: createSearchParams({
-        ...params,
-        category: String(id),
-      }).toString(),
+      query: {
+        id: id.toString(),
+      }
     });
-  }; */
+  };
   const router = useRouter()
   /* const convertVariableToString = (): any => {
     const val = JSON.parse(`{"img" : "images.laptopCategory"}`);
@@ -54,7 +51,7 @@ const Home = () => {
       <SlideShow />
       <BannerWrapper>
         <Banner>
-          <Link href="/product">
+          <Link href="/product" scroll={false}>
             <ShopNowButton>
               Shop now <ArrowRightOutlined />
             </ShopNowButton>
@@ -68,7 +65,7 @@ const Home = () => {
           </BannerDescription>
         </Banner>
         <Banner>
-          <Link href="/product">
+          <Link href="/product" scroll={false}>
             <ShopNowButton>
               Shop now <ArrowRightOutlined />
             </ShopNowButton>
@@ -82,7 +79,7 @@ const Home = () => {
           </BannerDescription>
         </Banner>
         <Banner>
-          <Link href="/product">
+          <Link href="/product" scroll={false}>
             <ShopNowButton>
               Shop now <ArrowRightOutlined />
             </ShopNowButton>
@@ -102,7 +99,7 @@ const Home = () => {
           {categoryData?.map((item: IdataCategory, index: number) => (
             <CategoryItem
               key={index}
-              /* onClick={() => handleGotoProductByCategory(item.id)} */
+              onClick={() => handleGotoProductByCategory(item.id)}
             >
               <CategoryTitle>{item.name}</CategoryTitle>
               <CategoryItemImgWrapper>

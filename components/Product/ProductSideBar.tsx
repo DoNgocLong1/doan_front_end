@@ -28,11 +28,13 @@ import {
   SideBarToggle,
   Title,
 } from "./ProductSideBar.styled";
+import { useRouter } from "next/router";
 const ProductSideBar = ({ showSideBar }: any) => {
   const categoryData: IdataCategory[] = useCategory();
   const handleFilter = (tag: number): void => {
     transmissionParams("category", tag);
   };
+  const router = useRouter();
   const { transmissionParams, twoKeysTransmissionParams } = useUrlParams();
   const { minPrice, maxPrice } = useProduct();
   type MenuItem = Required<MenuProps>["items"][number];
