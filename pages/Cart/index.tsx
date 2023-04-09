@@ -37,7 +37,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import useCart from "@/hooks/useCart";
 import { instance } from "@/apiServices/instance";
 import Link from "next/link";
-import EmptyCart from "@/components/common/EmptyCart/EmptyCart";
+import EmptyItem from "@/components/common/EmptyCart/EmptyCart";
 import SuccessPayment from "@/components/common/SuccessPayment/SuccessPayment";
 import images from "@/images";
 import { ICartList } from "@/types/cartType.type";
@@ -46,7 +46,6 @@ const Cart = () => {
   let userData: any;
   if (typeof window !== 'undefined') {
     user = localStorage.getItem("user");
-    console.log(user)
     userData = JSON.parse(user || "");
   }
   const [appearSuccess, setAppearSuccess] = useState<boolean>(false);
@@ -83,7 +82,9 @@ const Cart = () => {
   if (!cartList.length)
     return (
       <Container>
-        <EmptyCart />
+        <EmptyItem
+          des="Your Cart is empty"
+        />
         <Link href="/product">
           <GotoProductPage>Continues Shopping</GotoProductPage>
         </Link>
@@ -174,7 +175,9 @@ const Cart = () => {
               name="phoneNumber"
               rules={[
                 { required: true, message: "Please input your phone number!" },
-                { max: 10, message: "Phone number is less than 10 numbers" },
+                { max: 10, message: "Phone number must be 10 numbers" },
+                { min: 10, message: "Phone number must be 10 numbers" },
+                { pattern: new RegExp(/^[0-9]+$/), message: "Phone number must be number" },
               ]}
               hasFeedback
             >

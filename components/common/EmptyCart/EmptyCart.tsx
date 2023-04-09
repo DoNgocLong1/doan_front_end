@@ -38,11 +38,15 @@ export const GotoProductPage = styled.div`
     background-color: ${color.whiteColor};
   }
 `;
-const EmptyCart = () => {
+interface IEmptyCart {
+  des: string
+}
+const EmptyItem = ({ des } :IEmptyCart) => {
+  console.log(des)
   return (
     <EmptyContainer>
-      <Empty description="Your Cart is empty" />
+      <Empty description={des} />
     </EmptyContainer>
   );
 };
-export default EmptyCart;
+export default EmptyItem;

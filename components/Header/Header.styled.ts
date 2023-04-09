@@ -36,7 +36,7 @@ export const LogoWrapper = styled.div`
 `;
 export const Logo = styled.img`
   width: 14em;
-  object-fit: cover;
+  object-fit: contain;
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(213deg)
     brightness(105%) contrast(101%);
   @media ${breakPoints.mobile} {
@@ -146,4 +146,7 @@ export const UserFeatureIcon = styled.div`
 export const UserFeatureName = styled.div`
   font-size: 1em;
   white-space: nowrap;
+`;
+export const UserName = styled.p`
+  font-size: 1em;
 `;

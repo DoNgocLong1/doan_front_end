@@ -21,6 +21,8 @@ export const BannerWrapper = styled.div`
 `;
 export const Banner = styled.img`
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 export const BannerTitle = styled.h1`
   font-size: 5em;
@@ -51,7 +53,7 @@ export const SideBarContainer = styled.div`
     left: 0;
     z-index: 90;
     transform: ${(props: { isShow: boolean }) =>
-      props.isShow ? "translateX(0)" : "translateX(-100%)"};
+    props.isShow ? "translateX(0)" : "translateX(-100%)"};
   }
 `;
 export const ListProductContainer = styled.div`
@@ -63,7 +65,7 @@ export const Overlay = styled.div`
   display: none;
   @media ${breakPoints.mobile} {
     display: ${(props: { isShow: boolean }) =>
-      props.isShow ? "block" : "none"};
+    props.isShow ? "block" : "none"};
     position: fixed;
     top: 0;
     left: 0;

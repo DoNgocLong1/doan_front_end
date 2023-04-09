@@ -1,6 +1,7 @@
 import { logout, selectAuth } from "@/features/auth/authSlice";
 import { selectCartList } from "@/features/cart/cartSlice";
 import images from "@/images";
+import { Iuser } from "@/types/index.type";
 import {
   ExportOutlined,
   HistoryOutlined,
@@ -10,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListItemLite from "../common/ListItemLite/ListItemLite";
 import PropDown from "../common/PropDown/PropDown";
@@ -32,8 +33,9 @@ import {
   UserFeatureName,
   UserFeatureWrapper,
   UserImg,
+  UserName,
 } from "./Header.styled";
-const Logout = () => {
+const Logout = ({ setIsLogin }: any) => {
   const { isAuthenticated } = useSelector(selectAuth);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -41,27 +43,37 @@ const Logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     dispatch(logout(!isAuthenticated));
+    setIsLogin(false)
     router.push("/");
   };
-  const [ image, setImage] = useState();
+  const [image, setImage] = useState<string>();
+  const [userData, setUserData] = useState<Iuser>({
+    email: '',
+    roleId: '',
+  });
   useEffect(() => {
     if (typeof window !== 'undefined') {
-    const userData = localStorage.getItem('user') || ''
-    const image = JSON.parse(userData).image
-    console.log(image);
-    setImage(image)
+      const data = JSON.parse(localStorage.getItem('user') || '');
+      const image = data.image
+      setImage(image)
+      delete data.image;
+      setUserData(data);
     }
   }, [])
   const [show, setShow] = useState<boolean>(false);
-  const userAvatar = "";
   return (
     <Feature>
       <UserImg
         src={image}
+        alt="avatar"
+        title="avatar"
+        width="50"
+        height="50"
         onClick={() => {
           setShow((prev) => (prev ? false : true));
         }}
       />
+      <UserName>{userData?.firstname}  {userData?.lastname}</UserName>
       <PropDown isShow={show} translateX="-55%">
         <UserFeature>
           <Link href="/account">
@@ -93,10 +105,23 @@ const Header = () => {
   const { listLength } = useSelector(selectCartList);
   const [show, setShow] = useState<boolean>(false);
   const { isAuthenticated } = useSelector(selectAuth);
+  const [token, setToken] = useState<string>('');
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const getToken = localStorage.getItem('token') || ''
+      if (getToken) {
+        setToken(getToken)
+        setIsLogin(true)
+      } else {
+        setIsLogin(false)
+      }
+    }
+  }, [token, isLogin])
   return (
     <Container>
       <Link href="/">
-        <Logo src={images.logo.src} />
+        <Logo src={images.logo.src} alt="logo" title="logo" width="140" height="50" />
         <LogoWrapper>
           <HomeOutlined />
         </LogoWrapper>
@@ -121,9 +146,9 @@ const Header = () => {
             <ListItemLite />
           </PropDown>
         </Feature>
-        {isAuthenticated ? (
-          <Logout />
-        ) : (     
+        {isLogin ? (
+          <Logout setIsLogin={setIsLogin} />
+        ) : (
           <FeatureLink>
             <Feature>
               <IconWrapper>

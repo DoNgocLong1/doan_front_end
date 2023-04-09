@@ -9,7 +9,6 @@ interface IDefaultLayout {
 }
 const DefaultLayout = ({ children }: IDefaultLayout) => {
   const { pathname } = useRouter();
-  console.log(pathname)
   return (
     <>
     { pathname === "/login" ? (

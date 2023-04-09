@@ -12,6 +12,9 @@ import monitorCategory from "./public/monitor_Category.jpg";
 import projectorCategory from "./public/projector_Category.jpg";
 import graphicCardCategory from "./public/graphicCard_Category.png";
 import accessoryCategory from "./public/accessory_Category.jpg";
+import appStorePaymnet from "./public/appStorePaymnet.jpg";
+import googlePlayPaymnet from "./public/googlePlayPaymnet.jpg";
+import cardPayment from "./public/cardPayment.jpg";
 import logo from "./public/logo.png";
 import laptopBanner from "./public/laptopBanner.png";
 import monitorBanner from "./public/monitorBanner.png";
@@ -46,6 +49,9 @@ const images = {
   planet9Brand,
   productBanner,
   cartBanner,
+  appStorePaymnet,
+  googlePlayPaymnet,
+  cardPayment,
 };
 export const slideShow = [
   slideShow1,

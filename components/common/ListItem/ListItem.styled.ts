@@ -21,14 +21,14 @@ export const ListItemWrapper = styled.div<IListItem>`
   @media ${breakPoints.tablet} {
     grid-template-columns: repeat(
       ${(props) =>
-        props.ItemPerRowOnTablet},
+    props.ItemPerRowOnTablet},
       ${(props) => props.size}
     );
   }
   @media ${breakPoints.mobile} {
     grid-template-columns: repeat(
       ${(props) =>
-        props.ItemPerRowOnMobile},
+    props.ItemPerRowOnMobile},
       ${(props) => props.size}
     );
   }
@@ -75,7 +75,7 @@ export const ItemImageWrapper = styled.div`
 export const ItemImage = styled.img`
   width: 70%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
   transition: ease 0.25s;
 `;
 export const ItemType = styled.span`

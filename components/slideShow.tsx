@@ -4,9 +4,10 @@ import styled from "styled-components";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import color from "@/utils/color";
 import { slideShow } from "@/images";
-import Image from "next/image";
 const contentStyle: React.CSSProperties = {
   width: "100%",
+  height: "100%",
+  objectFit: "contain",
   color: "${color.whiteColor}",
   lineHeight: "160px",
   textAlign: "center",
@@ -50,7 +51,7 @@ const SlideShow: React.FC = () => {
       <Carousel autoplay ref={carouselRef}>
         {slideShow.map((item: any, index: number) => (
           <div key={index}>
-            <img style={contentStyle} src={item.src} alt="slide show" />
+            <img style={contentStyle} src={item.src} alt="slide show" title="slideshow" width="1281" height="541" />
           </div>
         ))}
       </Carousel>

@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 const useUrlParams = () => {
   const router = useRouter()
   const pathname = router.pathname;
-  console.log(router.query);
   const transmissionParams = (key: string, value: any): void => {
     router.push({
       pathname: pathname,

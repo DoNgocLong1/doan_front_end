@@ -130,7 +130,12 @@ const ProductSideBar = ({ showSideBar }: any) => {
             <CategoryName>All</CategoryName>
           </CategoryWrapperActive>
         ) : (
-          <CategoryWrapper onClick={() => handleFilter(0)}>
+          <CategoryWrapper
+            onClick={() => {
+              handleFilter(0)
+              setCategoryActive(0)
+            }}
+          >
             <CategoryIconWarper>
               <RadarChartOutlined />
             </CategoryIconWarper>
@@ -141,7 +146,7 @@ const ProductSideBar = ({ showSideBar }: any) => {
           categoryActive === item.id ? (
             <CategoryWrapperActive key={index}>
               <CategoryImgWarper>
-                <CategoryImg src={item.image} alt={item.name} />
+                <CategoryImg src={item.image} alt={item.name} title={item.name} width="30" height="30" />
               </CategoryImgWarper>
               <CategoryName>{item.name}</CategoryName>
             </CategoryWrapperActive>
@@ -154,7 +159,7 @@ const ProductSideBar = ({ showSideBar }: any) => {
               }}
             >
               <CategoryImgWarper>
-                <CategoryImg src={item.image} alt={item.name} />
+                <CategoryImg src={item.image} alt={item.name} title={item.name} width="30" height="30" />
               </CategoryImgWarper>
               <CategoryName>{item.name}</CategoryName>
             </CategoryWrapper>

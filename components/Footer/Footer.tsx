@@ -33,16 +33,16 @@ const Footer = () => {
     <Container>
       <BrandWrapper>
         <BrandImgWrapper>
-          <BrandImg src={images.conceptdBrand.src} />
+          <BrandImg src={images.conceptdBrand.src} alt="brand" title="brand" width="250" height="50" />
         </BrandImgWrapper>
         <BrandImgWrapper>
-          <BrandImg src={images.predatorBrand.src} />
+          <BrandImg src={images.predatorBrand.src} alt="brand" title="brand" width="250" height="50" />
         </BrandImgWrapper>
         <BrandImgWrapper>
-          <BrandImg src={images.spatialLabsBrand.src} />
+          <BrandImg src={images.spatialLabsBrand.src} alt="brand" title="brand" width="250" height="50" />
         </BrandImgWrapper>
         <BrandImgWrapper>
-          <BrandImg src={images.planet9Brand.src} />
+          <BrandImg src={images.planet9Brand.src} alt="brand" title="brand" width="250" height="50" />
         </BrandImgWrapper>
       </BrandWrapper>
       <Stick />
@@ -86,11 +86,11 @@ const Footer = () => {
           <PaymentTitle>App & Payment</PaymentTitle>
           <PaymentSubTitle>From App Store or Google Play</PaymentSubTitle>
           <PaymentProcedureWrapper>
-            <PaymentProcedureImg src={"images.appStorePaymnet"} />
-            <PaymentProcedureImg src={"images.googlePlayPaymnet"} />
+            <PaymentProcedureImg src={images.appStorePaymnet.src} alt="payment" title="payment" width="130" height="45" />
+            <PaymentProcedureImg src={images.googlePlayPaymnet.src} alt="payment" title="payment" width="130" height="45" />
           </PaymentProcedureWrapper>
           <PaymentSubTitle>Secured Payment Gateways</PaymentSubTitle>
-          <PaymentCardImg src={"images.cardPayment"} />
+          <PaymentCardImg src={images.cardPayment.src} alt="payment" title="payment" width="1=250" height="36" />
         </PaymentWrapper>
       </Wrapper>
     </Container>

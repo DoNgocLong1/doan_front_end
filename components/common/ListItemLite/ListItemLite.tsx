@@ -19,7 +19,7 @@ import {
   RemoveButton,
 } from "./ListItemLite.styled";
 import { CloseOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import EmptyCart from "../EmptyCart/EmptyCart";
+import EmptyItem from "../EmptyCart/EmptyCart";
 import Link from "next/link";
 import useCart from "@/hooks/useCart";
 import { useSelector } from "react-redux";
@@ -37,7 +37,7 @@ const ListItemLite = () => {
   } = useCart();
   const { isAuthenticated } = useSelector(selectAuth);
   const onOrder = async () => {
-    !isAuthenticated ? alert('you are not login yet') : router.push('/cart')
+    //!isAuthenticated ? alert('you are not login yet') : router.push('/cart')
     /* const params: any = {
       user_id: 1,
       amount: totalPrice,
@@ -56,20 +56,23 @@ const ListItemLite = () => {
       .catch((error) => {
         console.log(error);
       }); */
+    router.push('/cart')
   };
   return (
     <Container>
       <PropDownTitle>Your cart</PropDownTitle>
       <PropDownListItemWrapper>
         {cartList.length === 0 ? (
-          <EmptyCart />
+          <EmptyItem
+            des="Your Cart is empty"
+          />
         ) : (
           cartList.map((item: any, index: number) => (
             <PropDownItemWrapper key={index}>
               <RemoveButton onClick={() => handleRemove(item)}>
                 <CloseOutlined />
               </RemoveButton>
-              <ItemImg src={item.img} />
+              <ItemImg src={item?.img || ''} alt={item.name} title={item.name} width="175" height="175" />
               <ItemDetailWrapper>
                 <ItemDetailName>{item.name}</ItemDetailName>
                 <ItemDetailPrice>{item.price}$/1</ItemDetailPrice>

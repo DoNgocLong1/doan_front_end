@@ -33,7 +33,8 @@ export const Banner = styled.div`
 export const BannerImg = styled.img`
   position: absolute;
   width: 25em;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   bottom: 0;
   right: 0;
   z-index: 1;
@@ -122,7 +123,9 @@ export const CategoryTitle = styled.span`
 `;
 export const CategoryItemImg = styled.img`
   transition: 0.3s ease;
-  width: 100%;
+  width: 200px;
+  height: 100%;
+  object-fit: contain;
   color: ${color.whiteColor};
   @media ${breakPoints.mobile} {
     width: 25em;

@@ -4,23 +4,40 @@ import {
   Form,
   Input,
   Button,
-  Radio,
   Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Checkbox,
   Upload,
 } from 'antd';
+import { message } from 'antd';
+
 import { Container } from '@/styled/Admin.styled';
 import { createProduct } from '@/apiServices/productService';
+import { useMutation } from 'react-query';
 
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const FormDisabledDemo: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a success message',
+    });
+  };
+  const createProductMutation = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'create product success',
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'create product failed',
+      });
+    },
+    mutationFn: (productData: any) => createProduct(productData)
+  })
   const onFinish = async (values: any) => {
     console.log(values)
     const {
@@ -46,14 +63,19 @@ const FormDisabledDemo: React.FC = () => {
       discount: Number(discount)
     };
     console.log(productData)
+    createProductMutation.mutate(productData)
     //await createProduct(productData)
   };
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    messageApi.open({
+      type: 'error',
+      content: 'create product failed',
+    });
   };
   return (
     <>
       <Container>
+        {contextHolder}
         <Form
             layout="horizontal"
             onFinish={onFinish}
@@ -62,8 +84,13 @@ const FormDisabledDemo: React.FC = () => {
           <Form.Item label="Name" name="name">
             <Input placeholder='Product name'/>
           </Form.Item>
-          <Form.Item label="Select" name="categoryId">
-            <Select defaultValue="1">
+          <Form.Item
+            label="Select"
+            name="categoryId"
+            rules={[
+              { required: true, message: "Please select category!" }]}
+          >
+            <Select>
                 <Select.Option value="1">Laptops</Select.Option>
                 <Select.Option value="2">Desktops</Select.Option>
                 <Select.Option value="3">Monitors</Select.Option>
@@ -72,10 +99,17 @@ const FormDisabledDemo: React.FC = () => {
                 <Select.Option value="6">Accessories</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Name" name="brand">
+          <Form.Item label="Brand" name="brand">
             <Input placeholder='Brand name'/>
           </Form.Item>
-          <Form.Item label="Price" name="price">
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[
+              { required: true, message: "Please input your phone number!" },
+              { pattern: new RegExp(/^[0-9]+$/), message: "price must be number" },
+            ]}
+          >
             <Input placeholder='Price'/>
           </Form.Item>
           <Form.Item label="Description" name="description">
@@ -84,7 +118,14 @@ const FormDisabledDemo: React.FC = () => {
           <Form.Item label="Product detail" name="parameter">
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item label="Quantity in stock" name="quantityInStock">
+          <Form.Item
+            label="Quantity in stock"
+            name="quantityInStock"
+            rules={[
+              { required: true, message: "Please input quantity in stock" },
+              { pattern: new RegExp(/^[0-9]+$/), message: "Quantity must be number" },
+            ]}
+          >
             <Input placeholder='Quantity in stock'/>
           </Form.Item>
           <Form.Item label="Rate" name="rate">

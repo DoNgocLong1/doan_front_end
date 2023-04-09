@@ -7,6 +7,7 @@ import { Rate } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import EmptyItem from "../EmptyCart/EmptyCart";
 import Notification from "../Notification/Notification";
 import {
   AddButton,
@@ -52,24 +53,31 @@ const ListItem = ({
     };
     dispatch(addItem(payloadData));
   };
-  const handleSelectProduct = (id: number): void => {
+  const handleSelectProduct = (id: string): void => {
     router.push(`/product-detail/${id}`)
   }
+  //console.log(data)
   return (
     <Container>
+      {data.length === 0 &&
+        <EmptyItem des="can not find" />
+      }
       <ListItemWrapper
         ItemPerRow={ItemPerRow}
         ItemPerRowOnMobile={ItemPerRowOnMobile}
         ItemPerRowOnTablet={ItemPerRowOnTablet}
         size={size}
       >
-        {data?.map((item: any, index) => (
+        {data?.map((item: IProductItem, index) => (
           <ItemWrapper key={index}>
             {item.discount > 0 && <Discount>-{item.discount}%</Discount>}
             <ItemImageWrapper>
               <ItemImage
-                src={ `data:image/webp;base64,${item.Image_Products[0]?.image.data}`}
+                src={item?.Image_Products?.image}
                 alt={item.name}
+                title={item.name}
+                width="200"
+                height="200"
               />
               <ProductActionWrapper>
                 <ProductAction>
@@ -79,7 +87,7 @@ const ListItem = ({
                 <ProductAction></ProductAction>
               </ProductActionWrapper>
             </ItemImageWrapper>
-            <ItemType>{item.type}</ItemType>
+            {/* <ItemType>{item.type}</ItemType> */}
             <ItemName
               onClick={() => handleSelectProduct(item.id)}
             >

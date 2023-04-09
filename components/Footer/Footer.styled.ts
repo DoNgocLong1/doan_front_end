@@ -32,7 +32,8 @@ export const BrandImgWrapper = styled.div`
 `;
 export const BrandImg = styled.img`
   width: 25em;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   filter: invert(83%) sepia(9%) saturate(13%) hue-rotate(102deg)
     brightness(100%) contrast(89%);
   &:hover {
@@ -97,14 +98,17 @@ export const PaymentSubTitle = styled.p`
 `;
 export const PaymentProcedureWrapper = styled.div`
   display: flex;
+  gap: 2em;
   justify-content: center;
   align-items: center;
 `;
 export const PaymentProcedureImg = styled.img`
   width: 13em;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 `;
 export const PaymentCardImg = styled.img`
+  height: 100%;
   width: 25em;
-  object-fit: cover;
+  object-fit: contain;
 `;
