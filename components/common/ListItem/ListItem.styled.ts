@@ -146,6 +146,8 @@ export const ItemWrapper = styled.div`
   border-radius: 1.5em;
   position: relative;
   z-index: 1;
+  transition: 0.5s;
+
   //border: 2px solid #e7e765;
   .ant-rate {
     font-size: 1.5em;
@@ -161,6 +163,8 @@ export const ItemWrapper = styled.div`
     ${ItemImage} {
       transform: scale(1.2);
     }
+    box-shadow: 0 0 30px  ${color.boxShadowColor};
+    transform: translateY(-10px);
   }
 `;
 export const Discount = styled.div`

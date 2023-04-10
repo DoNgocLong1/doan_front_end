@@ -3,6 +3,7 @@ import { selectCartList } from "@/features/cart/cartSlice";
 import images from "@/images";
 import { Iuser } from "@/types/index.type";
 import {
+  AliwangwangOutlined,
   ExportOutlined,
   HistoryOutlined,
   HomeOutlined,
@@ -96,6 +97,14 @@ const Logout = ({ setIsLogin }: any) => {
             </UserFeatureIcon>
             <UserFeatureName>Orders history </UserFeatureName>
           </UserFeatureWrapper>
+          <Link href="/admin">
+            <UserFeatureWrapper>
+              <UserFeatureIcon>
+                <AliwangwangOutlined />
+              </UserFeatureIcon>
+              <UserFeatureName >Admin</UserFeatureName>
+            </UserFeatureWrapper>
+          </Link>
         </UserFeature>
       </PropDown>
     </Feature>

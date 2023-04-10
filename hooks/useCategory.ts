@@ -7,7 +7,9 @@ const useCategory = () => {
     queryKey: ["listCategory"],
     queryFn: fetchCategory,
   });
-  const data: IdataCategory[] = categoryQuery.data?.data.data;
-  return data;
+  const categoryData: IdataCategory[] = categoryQuery.data?.data.data;
+  return {
+    categoryData,
+  };
 };
 export default useCategory;

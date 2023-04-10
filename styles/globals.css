@@ -116,3 +116,6 @@ a {
   border-radius: 5px;
   background-color: #9bae07;
 }
+a, img, button {
+  cursor: pointer;
+}

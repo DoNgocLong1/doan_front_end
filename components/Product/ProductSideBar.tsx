@@ -30,7 +30,7 @@ import {
 } from "./ProductSideBar.styled";
 import { useRouter } from "next/router";
 const ProductSideBar = ({ showSideBar }: any) => {
-  const categoryData: IdataCategory[] = useCategory();
+  const { categoryData } = useCategory();
   const handleFilter = (tag: number): void => {
     transmissionParams("category", tag);
   };

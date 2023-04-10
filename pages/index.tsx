@@ -31,7 +31,7 @@ import SlideShow from "@/components/slideShow";
 import Head from "next/head";
 
 const Home = () => {
-  const categoryData: IdataCategory[] = useCategory();
+  const { categoryData } = useCategory();
   const route = useRouter();
   const { popularProductData } = useProduct();
   const handleGotoProductByCategory = (id: number) => {

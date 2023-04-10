@@ -114,7 +114,7 @@ export const CategoryTitle = styled.span`
   text-align: center;
   width: 100%;
   padding: 0.5em;
-  background-color: #26ad60;
+  background-color: #f48949;
   font-size: 1.5em;
   color: #000;
   font-weight: bold;
@@ -161,7 +161,7 @@ export const CategoryItem = styled.div`
     ${CategoryItemImgWrapper} {
       background-color: ${color.backgroundItemColor};
       transform: translateY(-3.5em);
-      border-top: 0.5em solid #26ad60;
+      border-top: 0.5em solid #f48949;
     }
     ${CategoryItemImg} {
       transform: scale(1.2);

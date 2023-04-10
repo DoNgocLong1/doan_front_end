@@ -10,9 +10,18 @@ export const fetchCategory = async () => {
   return data;
 };
 
-export const createCategory = async (formData :ICategory) => {
+export const createCategory = async (formData: ICategory) => {
   const data = await instance
     .post("create-category", formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const deleteCategory = async (id: number) => {
+  const data = await instance
+    .post("delete-categories", { id })
     .then((response) => response)
     .catch((error) => {
       console.log(error);

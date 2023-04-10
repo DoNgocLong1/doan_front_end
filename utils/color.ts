@@ -6,5 +6,6 @@ const color = {
   whiteColor: "#fff",
   headerColor: "#2a2929",
   footerColor: "#2d2c2c",
+  boxShadowColor: "#7d5035",
 };
 export default color;

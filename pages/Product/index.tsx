@@ -20,7 +20,6 @@ import Head from "next/head";
 
 const Product = () => {
   const { productData, totalItem, itemPerPage, productQuery } = useProduct();
-  console.log(productData);
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
   const { query } = useRouter();
   useEffect(() => {
