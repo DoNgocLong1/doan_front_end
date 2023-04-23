@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, InputNumber, Radio, Select } from "antd";
 import {
   Banner,
   BannerTitle,
@@ -41,13 +41,22 @@ import EmptyItem from "@/components/common/EmptyCart/EmptyCart";
 import SuccessPayment from "@/components/common/SuccessPayment/SuccessPayment";
 import images from "@/images";
 import { ICartList } from "@/types/cartType.type";
-const Cart = () => {
-  let user: any;
-  let userData: any;
-  if (typeof window !== 'undefined') {
-    user = localStorage.getItem("user");
-    userData = JSON.parse(user || "");
+import { getCookie } from "@/helper";
+import { getUser } from "@/apiServices/userServices";
+import { postOrder } from "@/apiServices/orderService";
+import { postOrderType } from "@/types/index.type";
+
+export const getServerSideProps = async (props: any) => {
+  const tokenType = props.req.headers.cookie || '';
+  const token = getCookie('token', tokenType) || ''
+  const fetchUserData = await getUser(token)
+  const userData = fetchUserData?.data || {}
+  return {
+    props: { userData }
   }
+}
+
+const Cart = ({ userData }: any) => {
   const [appearSuccess, setAppearSuccess] = useState<boolean>(false);
   const {
     handleAddItem,
@@ -57,27 +66,21 @@ const Cart = () => {
     orderList,
     totalPrice,
   } = useCart();
+  const { Option } = Select;
   const onFinish = async (values: any) => {
     console.log("first", values);
-    const params: any = {
-      user_id: 1,
+    if (values.paymentMethod === '0') {
+
+    }
+    const token = getCookie('token') || '';
+    const formData: postOrderType = {
       amount: totalPrice,
-      obj: orderList,
+      orderList: JSON.stringify(orderList),
+      fullName: values?.fullName,
+      phoneNumber: +values?.phoneNumber,
+      note: values?.note || '',
     };
-    const config = {
-      headers: {
-        "Content-Type": `application/json`,
-      },
-    };
-    await instance
-      .post("order", JSON.stringify(params), config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setAppearSuccess(true);
+    await postOrder(formData, token)
   };
   if (!cartList.length)
     return (
@@ -150,10 +153,16 @@ const Cart = () => {
           </ItemWrapper>
         </CartWrapper>
         <NoteWrapper>
-          <Form layout="horizontal" size="large" onFinish={onFinish}>
+          <Form
+            initialValues={{
+              fullName: userData.fullName,
+              address: userData.address,
+              phoneNumber: userData.phoneNumber
+            }}
+            onFinish={onFinish}
+          >
             <Form.Item
-              name="user_name"
-              initialValue={userData.name}
+              name="fullName"
               rules={[
                 { required: true, message: "Please input your name!" },
                 { max: 200, message: "Please input less than 200 characters" },
@@ -191,7 +200,15 @@ const Cart = () => {
               <SubTotalTitle>Subtotal:</SubTotalTitle>
               <SubTotal>{totalPrice} $</SubTotal>
             </NoteWrapper>
-            <SubTotalWrapper></SubTotalWrapper>
+            <Form.Item
+              name="paymentMethod"
+              rules={[{ required: true, message: 'Please pick an item!' }]}
+            >
+              <Radio.Group>
+                <Radio value="0">payment when receive</Radio>
+                <Radio value="1">payment now</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Form.Item>
               <PaymentButton type="submit">Payment</PaymentButton>
             </Form.Item>

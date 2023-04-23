@@ -1,5 +1,7 @@
+import { getUser } from "@/apiServices/userServices";
 import { logout, selectAuth } from "@/features/auth/authSlice";
 import { selectCartList } from "@/features/cart/cartSlice";
+import useUser from "@/hooks/useUser";
 import images from "@/images";
 import { Iuser } from "@/types/index.type";
 import {
@@ -47,25 +49,14 @@ const Logout = ({ setIsLogin }: any) => {
     setIsLogin(false)
     router.push("/");
   };
-  const [image, setImage] = useState<string>();
-  const [userData, setUserData] = useState<Iuser>({
-    email: '',
-    roleId: '',
-  });
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const data = JSON.parse(localStorage.getItem('user') || '');
-      const image = data.image
-      setImage(image)
-      delete data.image;
-      setUserData(data);
-    }
-  }, [])
+
+  const { userData } = useUser()
+  console.log(userData)
   const [show, setShow] = useState<boolean>(false);
   return (
     <Feature>
       <UserImg
-        src={image}
+        src={userData.image || '/user.png'}
         alt="avatar"
         title="avatar"
         width="50"
@@ -74,7 +65,7 @@ const Logout = ({ setIsLogin }: any) => {
           setShow((prev) => (prev ? false : true));
         }}
       />
-      <UserName>{userData?.firstname}  {userData?.lastname}</UserName>
+      <UserName>{userData?.firstName}  {userData?.lastName}</UserName>
       <PropDown isShow={show} translateX="-55%">
         <UserFeature>
           <Link href="/account">
@@ -113,7 +104,6 @@ const Logout = ({ setIsLogin }: any) => {
 const Header = () => {
   const { listLength } = useSelector(selectCartList);
   const [show, setShow] = useState<boolean>(false);
-  const { isAuthenticated } = useSelector(selectAuth);
   const [token, setToken] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(false);
   useEffect(() => {

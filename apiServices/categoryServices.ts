@@ -21,7 +21,17 @@ export const createCategory = async (formData: ICategory) => {
 };
 export const deleteCategory = async (id: number) => {
   const data = await instance
-    .post("delete-categories", { id })
+    .post("delete-category", { id })
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+
+export const editCategory = async (id: number) => {
+  const data = await instance
+    .post("edit-category", { id })
     .then((response) => response)
     .catch((error) => {
       console.log(error);

@@ -80,6 +80,7 @@ const FormDisabledDemo: React.FC = () => {
           layout="horizontal"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+
         >
           <Form.Item label="Name" name="name">
             <Input placeholder='Product name' />

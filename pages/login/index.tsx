@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/features/auth/authSlice";
+import { setCookie } from "@/helper";
 const Login = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState<string>("");
@@ -35,6 +36,7 @@ const Login = () => {
           return;
         }
         localStorage.setItem("token", res.data.token);
+        setCookie('token', res.data.token)
         localStorage.setItem("user", JSON.stringify(res.data.userData));
         router.push("/");
         dispatch(loginSuccess(res.data.userData))

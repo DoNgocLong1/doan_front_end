@@ -19,12 +19,13 @@ const useProduct = () => {
     queryKey: ["popularProduct"],
     queryFn: popularProduct,
   });
-  const minPrice = minMaxQuery.data?.data.data.min;
-  const maxPrice = minMaxQuery.data?.data.data.max;
-  const productData: any[] = productQuery.data?.data.data;
+  const minPrice: number = minMaxQuery.data?.data.data.min;
+  const maxPrice: number = minMaxQuery.data?.data.data.max;
+  const productData: IProductItem[] = productQuery.data?.data.data.rows;
   const popularProductData: IProductItem[] = popularProductQuery.data?.data;
-  const totalItem = productQuery.data?.data.total;
-  const itemPerPage = productQuery.data?.data.perPage;
+  const totalItem: number = productQuery.data?.data.total;
+  const itemPerPage: number = productQuery.data?.data.perPage;
+
   return {
     productQuery,
     minPrice,

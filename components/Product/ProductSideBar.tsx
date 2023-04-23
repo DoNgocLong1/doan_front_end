@@ -56,13 +56,13 @@ const ProductSideBar = ({ showSideBar }: any) => {
   const items: MenuItem[] = [
     getItem("Time", "sub1", <FieldTimeOutlined />, [
       getItem(
-        <SideBarButton onClick={() => transmissionParams("time", "newest")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "date", "sort_rule", "newest")}>
           Newest
         </SideBarButton>,
         "1"
       ),
       getItem(
-        <SideBarButton onClick={() => transmissionParams("time", "oldest")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "date", "sort_rule", "oldest")}>
           Oldest
         </SideBarButton>,
         "2"
@@ -70,13 +70,13 @@ const ProductSideBar = ({ showSideBar }: any) => {
     ]),
     getItem("Character", "sub2", <FontColorsOutlined />, [
       getItem(
-        <SideBarButton onClick={() => transmissionParams("sort", "az")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "name", "sort_rule", "az")}>
           <SortAscendingOutlined /> A-Z
         </SideBarButton>,
         "3"
       ),
       getItem(
-        <SideBarButton onClick={() => transmissionParams("sort", "za")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "name", "sort_rule", "za")}>
           <SortDescendingOutlined /> Z-A
         </SideBarButton>,
         "4"
@@ -84,13 +84,13 @@ const ProductSideBar = ({ showSideBar }: any) => {
     ]),
     getItem("Price", "sub4", <DollarCircleOutlined />, [
       getItem(
-        <SideBarButton onClick={() => transmissionParams("price", "increase")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "price", "sort_rule", "increase")}>
           <RiseOutlined /> Increase
         </SideBarButton>,
         "5"
       ),
       getItem(
-        <SideBarButton onClick={() => transmissionParams("price", "decrease")}>
+        <SideBarButton onClick={() => twoKeysTransmissionParams("sort_key", "price", "sort_rule", "decrease")}>
           <FallOutlined /> Decrease
         </SideBarButton>,
         "6"
