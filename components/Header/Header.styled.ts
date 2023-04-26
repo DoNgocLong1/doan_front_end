@@ -149,4 +149,7 @@ export const UserFeatureName = styled.div`
 `;
 export const UserName = styled.p`
   font-size: 1em;
+  @media ${breakPoints.mobile} {
+    display: none;
+  }
 `;

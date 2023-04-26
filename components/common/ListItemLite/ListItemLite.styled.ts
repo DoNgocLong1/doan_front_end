@@ -7,7 +7,7 @@ export const Container = styled.div`
   padding: 1em;
   background-color: ${color.whiteColor};
 `;
-export const PropDownTitle = styled.h1`
+export const PropDownTitle = styled.h2`
   font-size: 1.5em;
 `;
 export const PropDownListItemWrapper = styled.ul`
@@ -45,7 +45,8 @@ export const RemoveButton = styled.button`
 `;
 export const ItemImg = styled.img`
   height: 4em;
-  object-fit: cover;
+  width: 7em;
+  object-fit: contain;
 `;
 export const ItemDetailWrapper = styled.div`
   display: flex;
@@ -79,6 +80,7 @@ export const QuantityButton = styled.button`
   border: none;
   font-size: 0.8em;
   background-color: transparent;
+  color: #000;
   :hover {
     color: ${color.orange};
   }
@@ -98,10 +100,10 @@ export const ItemFooterWrapper = styled.div`
   justify-content: flex-start;
   gap: 0.2em;
 `;
-export const ItemFooterTitle = styled.h1`
+export const ItemFooterTitle = styled.h2`
   font-size: 1.2em;
 `;
-export const ItemFooterContent = styled.h1`
+export const ItemFooterContent = styled.h2`
   font-size: 1.2em;
   color: ${color.orange};
 `;

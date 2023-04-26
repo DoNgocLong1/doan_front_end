@@ -52,6 +52,12 @@ const Home = () => {
       <Head>
         <title>Predator</title>
         <meta data-n-head="ssr" data-hid="description" name="description" content="homepage" />
+        <link
+          data-n-head="ssr"
+          rel="canonical"
+          href=""
+          key="canonical"
+        />
       </Head>
       <Container>
         <SlideShow />

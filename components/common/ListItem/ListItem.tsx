@@ -45,9 +45,10 @@ const ListItem = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const handleAddItem = (payload: any): void => {
+    console.log(payload.Image_Products.image)
     const payloadData: CartItemType = {
       id: payload.id,
-      img: payload.image,
+      img: payload.Image_Products.image || '',
       name: payload.name,
       price: +payload.price,
     };
@@ -56,7 +57,6 @@ const ListItem = ({
   const handleSelectProduct = (id: string): void => {
     router.push(`/product-detail/${id}`)
   }
-  //console.log(data)
   return (
     <Container>
       {data.length === 0 &&
@@ -87,7 +87,6 @@ const ListItem = ({
                 <ProductAction></ProductAction>
               </ProductActionWrapper>
             </ItemImageWrapper>
-            {/* <ItemType>{item.type}</ItemType> */}
             <ItemName
               onClick={() => handleSelectProduct(item.id)}
             >

@@ -7,7 +7,6 @@ const useCart = () => {
   const { cartList, totalPrice, listLength } = useSelector(selectCartList);
   const dispatch = useDispatch();
   const handleAddItem = (payload: any): void => {
-    console.log(payload);
     const payloadData: CartItemType = {
       id: payload.id,
       img: payload.img || "",
@@ -17,7 +16,6 @@ const useCart = () => {
     dispatch(addItem(payloadData));
   };
   const handleDecreaseItem = (payload: any): void => {
-    console.log(payload);
     const payloadData: CartItemType = {
       id: payload.id,
       img: payload.img || "",
@@ -27,7 +25,6 @@ const useCart = () => {
     dispatch(decreaseItem(payloadData));
   };
   const handleRemove = (payload: any): void => {
-    console.log(payload);
     const payloadData: CartItemType = {
       id: payload.id,
       img: payload.img || "",

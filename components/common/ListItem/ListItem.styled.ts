@@ -14,7 +14,7 @@ export const ListItemWrapper = styled.div<IListItem>`
   display: grid;
   grid-template-columns: repeat(
     ${(props) => props.ItemPerRow},
-    ${(props) => props.size}
+    ${(props) => props?.size || 'minmax(250px, 1fr)'}
   );
   row-gap: 2em;
   column-gap: 2em;
@@ -33,6 +33,11 @@ export const ListItemWrapper = styled.div<IListItem>`
     );
   }
 `;
+export const ProductWrapper = styled.div`
+  max-width: 35em;
+  width: 100;
+`;
+
 export const ProductActionWrapper = styled.ul`
   list-style: none;
   position: absolute;
@@ -145,6 +150,8 @@ export const ItemWrapper = styled.div`
   background-color: ${color.backgroundItemColor};
   border-radius: 1.5em;
   position: relative;
+  max-width: 35em;
+  width: 100;
   z-index: 1;
   transition: 0.5s;
 

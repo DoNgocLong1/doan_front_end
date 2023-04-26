@@ -65,7 +65,7 @@ const Logout = ({ setIsLogin }: any) => {
           setShow((prev) => (prev ? false : true));
         }}
       />
-      <UserName>{userData?.firstName}  {userData?.lastName}</UserName>
+      <UserName>{userData?.fullName || ''}  </UserName>
       <PropDown isShow={show} translateX="-55%">
         <UserFeature>
           <Link href="/account">

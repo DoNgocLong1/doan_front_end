@@ -26,9 +26,9 @@ export const popularProduct = async () => {
     });
   return data;
 };
-export const productDetail = async (id: string) => {
+export const getProductDetail = async (id: string) => {
   const data = await instance
-    .get(`products/product-detail`, {params: {id}})
+    .get(`products/product-detail?id=${id}`)
     .then((response) => response)
     .catch((error) => {
       console.log(error);

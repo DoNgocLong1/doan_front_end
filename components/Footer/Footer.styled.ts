@@ -88,7 +88,7 @@ export const PaymentWrapper = styled.div`
   align-items: flex-start;
   gap: 1em;
 `;
-export const PaymentTitle = styled.h1`
+export const PaymentTitle = styled.h2`
   font-size: 2.5em;
   color: ${color.whiteColor};
 `;

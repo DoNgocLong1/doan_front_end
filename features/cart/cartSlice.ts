@@ -46,7 +46,7 @@ const cartSlice = createSlice({
       const existingItem: any = state.cartList.find((cart: ICartList) => {
         return cart.id === action.payload.id;
       });
-      if (existingItem.count === 0) {
+      if (existingItem.count === 1) {
         state.cartList.splice(state.cartList.indexOf(existingItem), 1);
       }
       existingItem.count--;
