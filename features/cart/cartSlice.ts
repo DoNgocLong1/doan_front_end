@@ -54,10 +54,15 @@ const cartSlice = createSlice({
       state.listLength--;
       state.totalPrice -= existingItem.price;
     },
+    removeAllItem(state: IInitialState) {
+      state.cartList = []
+      state.listLength = 0
+      state.totalPrice = 0
+    },
   },
 });
 //action
-export const { addItem, removeItem, decreaseItem } = cartSlice.actions;
+export const { addItem, removeItem, decreaseItem, removeAllItem } = cartSlice.actions;
 // reducer
 export default cartSlice.reducer;
 //state

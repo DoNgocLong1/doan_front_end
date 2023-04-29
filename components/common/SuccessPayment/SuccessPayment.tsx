@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Result } from "antd";
 import styled from "styled-components";
 import color from "@/utils/color";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { removeAllItem } from "@/features/cart/cartSlice";
 
 const Container = styled.div`
   position: fixed;
@@ -38,6 +40,11 @@ interface ISuccessPayment {
   setIsShow: any;
 }
 const SuccessPayment = ({ isShow, setIsShow }: ISuccessPayment) => {
+  const dispatch = useDispatch();
+  const handleCompleteOrder = () => {
+    setIsShow(false)
+    dispatch(removeAllItem())
+  }
   return (
     <Container isShow={isShow}>
       <Layout isShow={isShow} />
@@ -47,7 +54,7 @@ const SuccessPayment = ({ isShow, setIsShow }: ISuccessPayment) => {
         subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
         extra={[
           <Link key="buy" href="/product">
-            <Button onClick={() => setIsShow(false)}>Buy Again</Button>
+            <Button onClick={handleCompleteOrder}>Buy Again</Button>
           </Link>,
         ]}
       />

@@ -12,16 +12,26 @@ import { message } from 'antd';
 
 import { FeatureWrapper, OptionContainer } from '@/styled/Admin.styled';
 import { useMutation } from 'react-query';
-import { createCategory, deleteCategory, editCategory } from '@/apiServices/categoryServices';
-import { AddIcon, CategoryId, CategoryImage, CategoryItem, CategoryItemHeader, CategoryName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper } from '@/styled/AdminCategory.styled';
-import { createUser } from '@/apiServices/userServices';
-import { IUserCreateData } from '@/types/index.type';
+import { AddIcon, UserId, UserImage, UserItem, UserItemHeader, UserName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper, UserText, Wrapper, EmailWrapper } from '@/styled/AdminUser.styled';
+import { createUser, getAllUser } from '@/apiServices/userServices';
+import { IFetchUserData, IUserCreateData, IUserData } from '@/types/index.type';
+import { DateInput } from '@/styled/Account.styled';
 
-
-const AdminUser: React.FC = () => {
+export const getServerSideProps = async () => {
+  const allUser = await getAllUser()
+  return {
+    props: {
+      allUser: allUser?.data || {}
+    }
+  }
+}
+interface IAdminUser {
+  allUser: IFetchUserData[]
+}
+const AdminUser = ({ allUser }: IAdminUser) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [userGetData, setUserGetData] = useState<any>({});
-
+  console.log(allUser)
   useEffect(() => {
 
   }, [])
@@ -40,7 +50,7 @@ const AdminUser: React.FC = () => {
     },
     mutationFn: (userData: IUserCreateData) => createUser(userData)
   })
-  const deleteUserMutation: any = useMutation({
+  /* const deleteUserMutation: any = useMutation({
     onSuccess: () => {
       messageApi.open({
         type: 'success',
@@ -54,7 +64,7 @@ const AdminUser: React.FC = () => {
       });
     },
     mutationFn: (id: number) => deleteCategory(id)
-  })
+  }) */
   const onFinish = async () => {
     const userFormData: IUserCreateData = {
       fullName: userGetData.fullName,
@@ -68,9 +78,9 @@ const AdminUser: React.FC = () => {
     }
     createUserMutation.mutate(userFormData)
   };
-  const handleDeleteUser = (id: number) => {
+  /* const handleDeleteUser = (id: number) => {
     deleteUserMutation.mutate(id)
-  }
+  } */
   const onFinishFailed = (errorInfo: any) => {
     messageApi.open({
       type: 'error',
@@ -131,7 +141,7 @@ const AdminUser: React.FC = () => {
             <Input placeholder='input phone number' name="phoneNumber" value={userGetData.phoneNumber || ''} onChange={handleChange} />
           </Form.Item>
           <Form.Item label="Date of birth">
-            <input type="date" name="date" value={userGetData.date || ''} onChange={handleChange} />
+            <DateInput type="date" name="date" value={userGetData.date || ''} onChange={handleChange} />
           </Form.Item>
           {/* <Form.Item label="Select role ID">
             <Select name="roleId" value={userGetData.date} onChange={handleChange}>
@@ -165,45 +175,96 @@ const AdminUser: React.FC = () => {
           </Form.Item>
         </Form>
         <Container>
-          <CategoryItemHeader>
+          <UserItemHeader>
             <IdWrapper>
-              <CategoryId>ID</CategoryId>
+              <UserId>ID</UserId>
             </IdWrapper>
-            <NameWrapper>
-              <CategoryName>
+            <Wrapper>
+              <UserName>
                 Name
-              </CategoryName>
-            </NameWrapper>
-            <ImageWrapper>
-              <CategoryName>
-                Image
-              </CategoryName>
-            </ImageWrapper>
+              </UserName>
+            </Wrapper>
+            <EmailWrapper>
+              <UserId>
+                Email
+              </UserId>
+            </EmailWrapper>
+            <Wrapper>
+              <UserId>
+                Address
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Password
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Phone number
+              </UserId>
+            </Wrapper>
             <IdWrapper>
-              <CategoryId>
-                Feature
-              </CategoryId>
+              <UserId>
+                Role
+              </UserId>
             </IdWrapper>
-          </CategoryItemHeader>
-          {/* {categoryList?.map((item: IdataCategory) => (
-            <CategoryItem key={item?.id}>
+            <Wrapper>
+              <UserName>
+                Image
+              </UserName>
+            </Wrapper>
+            <IdWrapper>
+              <UserId>
+                Feature
+              </UserId>
+            </IdWrapper>
+          </UserItemHeader>
+          {allUser?.map((item: IFetchUserData) => (
+            <UserItem key={item?.id}>
               <IdWrapper>
-                <CategoryId>{item?.id}</CategoryId>
+                <UserId>{item?.id || 0}</UserId>
               </IdWrapper>
-              <NameWrapper>
-                <CategoryName>
-                  {item.name}
-                </CategoryName>
-              </NameWrapper>
-              <ImageWrapper>
-                <CategoryImage src={item?.image} />
-              </ImageWrapper>
+              <Wrapper>
+                <UserName>
+                  {item?.fullName || ''}
+                </UserName>
+              </Wrapper>
+              <EmailWrapper>
+                <UserId>
+                  {item?.email || ''}
+                </UserId>
+              </EmailWrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.address || ''}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.password || ''}
+
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.phoneNumber || ''}
+                </UserId>
+              </Wrapper>
+              <IdWrapper>
+                <UserId>
+                  {item?.roleId || 2}
+                </UserId>
+              </IdWrapper>
+              <Wrapper>
+                <UserImage src={item?.image || ''} />
+              </Wrapper>
               <FeatureWrapper>
-                <EditOutlined onClick={() => handleEditUser(item?.id)} />
-                <DeleteOutlined onClick={() => handleDeleteUser(item?.id)} />
+                <EditOutlined /* onClick={() => handleEditUser(item?.id)} */ />
+                <DeleteOutlined /* onClick={() => handleDeleteUser(item?.id)} */ />
               </FeatureWrapper>
-            </CategoryItem>
-          ))} */}
+            </UserItem>
+          ))}
         </Container>
       </OptionContainer>
     </>

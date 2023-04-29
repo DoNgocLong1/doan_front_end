@@ -92,9 +92,9 @@ export const SpecificationWrapper = styled.li`
 `;
 export const AddToCartButton = styled.button`
   color: ${color.whiteColor};
-  font-size: 1.5em;
+  font-size: 1.3em;
   background-color: ${color.backgroundColor};
-  padding: 1em 2em;
+  padding: 0.5em 1em;
   border: 1px solid ${color.whiteColor};
   width: fit-content;
   margin-top: 2em;

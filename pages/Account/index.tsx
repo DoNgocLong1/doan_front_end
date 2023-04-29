@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   AccountContainer,
   Container,
+  DateInput,
   Feature,
   FeatureWrapper,
   Sidebar,
@@ -14,48 +15,98 @@ import {
 } from "../../styled/Account.styled";
 import { Button, DatePicker, Form, Input, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { getUser, updateUserProfile } from "@/apiServices/userServices";
+import { getUser, updateUser, updateUserProfile } from "@/apiServices/userServices";
 import ChangePass from "@/components/Account/ChangePass/ChangePass";
 import useUser from "@/hooks/useUser";
 import { IUserData } from "@/types/index.type";
-
-const Account = () => {
-  const { userData } = useUser()
-  const [userGetData, setUserGetData] = useState<IUserData>({
-    fullName: '',
-    email: '',
-    address: '',
-    phoneNumber: 0,
-    date: '',
-    avatar: '',
-  })
-  useEffect(() => {
-    setUserGetData(userData)
-  }, [userData])
+import type { GetServerSideProps } from 'next'
+import { getCookie } from "@/helper";
+import { useMutation } from "react-query";
+import { message } from 'antd';
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token)
+  if (!token) {
+    return {
+      notFound: true
+    }
+  }
+  return {
+    props: {
+      data: fetchUser?.data || {},
+    }
+  }
+}
+interface IAccount {
+  data: IUserData
+}
+const Account = ({ data }: IAccount) => {
+  const [userData, setUserData] = useState<IUserData>(data)
+  console.log(userData)
   const [isProfileComponent, setIsProfileComponent] = useState<boolean>(true);
+  const [messageApi, contextHolder] = message.useMessage();
+  const token: string = getCookie('token') || ''
+  const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const reFetchingData = async () => {
+    const fetchUser = await getUser(token)
+    setUserData(fetchUser?.data || {})
+  }
+  const postUpdateUser = async (userFormData: IUserData) => {
+    updateUser(userFormData, token)
+    setIsUpdate(!isUpdate)
+  }
+  useEffect(() => {
+    reFetchingData()
+  }, [isUpdate])
+  const updateUserMutation = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'Update user success',
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'Update user failed',
+      });
+    },
+    mutationFn: (userFormData: IUserData) => postUpdateUser(userFormData)
+  })
   const onFinish = async (values: any) => {
-    console.log(values.avatar);
+    const avatar: string = values?.avatar?.file?.thumbUrl || ''
+    const userFormData: IUserData = {
+      fullName: userData.fullName,
+      email: userData.email,
+      address: userData.address,
+      phoneNumber: userData.phoneNumber,
+      date: userData.date,
+      image: avatar,
+    }
+    updateUserMutation.mutate(userFormData)
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e?.target?.files?.[0]) {
       const file = e?.target?.files?.[0]
       const reader = new FileReader()
       reader.onloadend = () => {
-        setUserGetData(userGetData => ({ ...userGetData, [e.target.name]: reader.result as string }));
+        setUserData(userData => ({ ...userData, [e.target.name]: reader.result as string }));
       }
       reader.readAsDataURL(file)
     } else {
-      setUserGetData(userGetData => ({ ...userGetData, [e.target.name]: e.target.value }));
+      setUserData(userData => ({ ...userData, [e.target.name]: e.target.value }));
     }
   }
   return (
     <Container>
+      {contextHolder}
       <Sidebar>
         <SidebarContainer>
           <SidebarHeader>
-            <SidebarHeaderImg src={"userData.user_img"} />
+            <SidebarHeaderImg src={userData?.image || '/user.png'} />
             <SidebarInfoWrapper>
-              <UserName>{userData?.name || ""}</UserName>
+              <UserName>{userData?.fullName || ""}</UserName>
               <UserEmail>{userData?.email || ""}</UserEmail>
             </SidebarInfoWrapper>
           </SidebarHeader>
@@ -84,7 +135,7 @@ const Account = () => {
               ]}
             >
               <Input
-                value={userGetData.fullName || ''}
+                value={userData.fullName || ''}
                 placeholder="Full name"
                 name="fullName"
                 onChange={handleChange}
@@ -93,13 +144,13 @@ const Account = () => {
             <Form.Item label="Email">
               <Input
                 placeholder="Email"
-                value={userGetData.email || ''}
+                value={userData.email || ''}
                 disabled
               />
             </Form.Item>
             <Form.Item label="Address">
               <Input
-                value={userGetData.address || ''}
+                value={userData.address || ''}
                 placeholder="Address"
                 name="address"
                 onChange={handleChange} />
@@ -113,14 +164,14 @@ const Account = () => {
               <Input
                 placeholder="Phone number"
                 name="phoneNumber"
-                value={userGetData.phoneNumber || 0}
+                value={userData.phoneNumber || 0}
                 onChange={handleChange}
               />
             </Form.Item>
             <Form.Item label="Date of birth">
-              <input
+              <DateInput
                 type="date"
-                value={userGetData.date || ''}
+                value={userData.date || ''}
                 name="date"
                 onChange={handleChange}
               />

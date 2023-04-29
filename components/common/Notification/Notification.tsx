@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { notification, Space } from "antd";
 import type { NotificationPlacement } from "antd/es/notification/interface";
+import { SmileOutlined } from "@ant-design/icons";
 interface INotification {
   button: React.ReactNode;
   messageType: string;
@@ -14,10 +15,11 @@ const Notification = ({
   const Context = React.createContext({ name: "Default" });
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement: NotificationPlacement) => {
-    api.info({
+    api.open({
       message: `${messageType}`,
       description: messageContent,
       placement,
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
     });
   };
   const contextValue = useMemo(() => ({ name: "long" }), []);

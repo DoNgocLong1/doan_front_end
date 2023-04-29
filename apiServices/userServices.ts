@@ -1,4 +1,4 @@
-import { IUserCreateData } from "@/types/index.type";
+import { IUserCreateData, IUserData } from "@/types/index.type";
 import { instance } from "./instance";
 export const updateUserProfile = async (userData: any, config: any) => {
   const data = await instance
@@ -42,3 +42,26 @@ export const createUser = async (formData: IUserCreateData) => {
     });
   return data;
 };
+export const updateUser = async (formData: IUserData, token: string) => {
+  const data = await instance
+    .post("user/update-user", formData, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      }
+    })
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+}
+export const getAllUser = async () => {
+  const data = await instance
+    .get("user/all-user")
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+}
+

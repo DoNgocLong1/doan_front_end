@@ -14,7 +14,18 @@ export interface IUserData {
   address?: string,
   phoneNumber?: number,
   date?: string,
-  avatar?: string,
+  image?: string,
+}
+export interface IFetchUserData {
+  id: number,
+  fullName: string,
+  email: string,
+  password: string,
+  address?: string,
+  phoneNumber?: number,
+  roleId: number,
+  date?: string,
+  image?: string,
 }
 
 export interface IUserCreateData {

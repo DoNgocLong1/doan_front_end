@@ -12,7 +12,7 @@ import { message } from 'antd';
 import { FeatureWrapper, OptionContainer } from '@/styled/Admin.styled';
 import { createProduct } from '@/apiServices/productService';
 import { useMutation } from 'react-query';
-import { createCategory, deleteCategory, editCategory } from '@/apiServices/categoryServices';
+import { createCategory, deleteCategory, getCategory, fetchCategory, updateCategory } from '@/apiServices/categoryServices';
 import { ICategory } from '@/types/index.type';
 import { IdataCategory } from '@/types/productType.type';
 import useCategory from '@/hooks/useCategory';
@@ -22,17 +22,12 @@ import { getCategories, selectCategory } from '@/features/admin/categorySlice';
 
 const AdminCategory: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [categoryGetData, setCategoryGetData] = useState<ICategory>({
+  const [categoryGetData, setCategoryGetData] = useState<IdataCategory>({
+    id: 0,
     name: '',
     image: ''
   });
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const { categoryData } = useCategory();
-  const { categoryList } = useSelector(selectCategory)
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getCategories(categoryData || []))
-  }, [categoryData])
   const createCategoryMutation: any = useMutation({
     onSuccess: () => {
       messageApi.open({
@@ -55,6 +50,7 @@ const AdminCategory: React.FC = () => {
         content: 'delete category success',
       });
     },
+
     onError: () => {
       messageApi.open({
         type: 'error',
@@ -63,17 +59,48 @@ const AdminCategory: React.FC = () => {
     },
     mutationFn: (id: number) => deleteCategory(id)
   })
+
+  const updateCategoryMutation: any = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'update category success',
+      });
+    },
+
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'update category failed',
+      });
+    },
+    mutationFn: (formData: IdataCategory) => updateCategory(formData)
+  })
+  const [categoryData, setCategoryData] = useState<IdataCategory[]>([])
+  const fetchCategoryData = async () => {
+    const categoryData: any = await fetchCategory()
+    setCategoryData(categoryData?.data?.data || [])
+  }
+  useEffect(() => {
+    fetchCategoryData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  console.log(categoryData)
   const onFinish = async () => {
     const categoryFormData: ICategory = {
       name: categoryGetData.name,
       image: categoryGetData.image,
     }
-    console.log(categoryFormData)
     createCategoryMutation.mutate(categoryFormData)
-    dispatch(getCategories(categoryData))
+    setTimeout(() => {
+      fetchCategoryData()
+    }, 1000)
   };
   const handleDeleteCategory = (id: number) => {
     deleteCategoryMutation.mutate(id)
+    setTimeout(() => {
+      fetchCategoryData()
+    }, 1000)
   }
   const onFinishFailed = (errorInfo: any) => {
     messageApi.open({
@@ -82,13 +109,19 @@ const AdminCategory: React.FC = () => {
     });
   };
 
-
-  console.log(categoryList)
-  const handleEditCategory = async (id: number) => {
+  const handleEditCategory = () => {
+    updateCategoryMutation.mutate(categoryGetData)
+    setTimeout(() => {
+      fetchCategoryData()
+    }, 1000)
+  }
+  const handleSelectCategory = async (id: number) => {
     setIsEdit(true)
-    const fetchCategoryData: any = await editCategory(id)
-    const { name, image } = fetchCategoryData?.data?.data || {}
+    const fetchCategoryData: any = await getCategory(id)
+    const { name, image } = fetchCategoryData?.data?.data || {};
+    console.log()
     setCategoryGetData({
+      id,
       name,
       image
     })
@@ -139,9 +172,16 @@ const AdminCategory: React.FC = () => {
               </AddIcon>
             </PreviewImageWrapper>
           </Form.Item>
-          <Form.Item label="Button" >
-            <Button htmlType="submit">Add Category</Button>
-          </Form.Item>
+          {isEdit ? (
+            <Form.Item label="Button" >
+              <Button onClick={handleEditCategory}>Update Category</Button>
+            </Form.Item>
+          ) : (
+            <Form.Item label="Button" >
+              <Button htmlType="submit">Add Category</Button>
+            </Form.Item>
+          )}
+
         </Form>
         <Container>
           <CategoryItemHeader>
@@ -164,7 +204,7 @@ const AdminCategory: React.FC = () => {
               </CategoryId>
             </IdWrapper>
           </CategoryItemHeader>
-          {categoryList?.map((item: IdataCategory) => (
+          {categoryData?.map((item: IdataCategory) => (
             <CategoryItem key={item?.id}>
               <IdWrapper>
                 <CategoryId>{item?.id}</CategoryId>
@@ -178,7 +218,7 @@ const AdminCategory: React.FC = () => {
                 <CategoryImage src={item?.image} />
               </ImageWrapper>
               <FeatureWrapper>
-                <EditOutlined onClick={() => handleEditCategory(item?.id)} />
+                <EditOutlined onClick={() => handleSelectCategory(item?.id)} />
                 <DeleteOutlined onClick={() => handleDeleteCategory(item?.id)} />
               </FeatureWrapper>
             </CategoryItem>

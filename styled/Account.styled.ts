@@ -118,3 +118,7 @@ export const AvatarUser = styled.img`
   border-radius: 50%;
   object-fit: cover;
 `;
+export const DateInput = styled.input`
+  padding: 0.5em;
+  font-size: 1.2em;
+`;

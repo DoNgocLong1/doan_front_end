@@ -80,7 +80,9 @@ const Cart = ({ userData }: any) => {
       phoneNumber: +values?.phoneNumber,
       note: values?.note || '',
     };
+    setAppearSuccess(true)
     await postOrder(formData, token)
+
   };
   if (!cartList.length)
     return (

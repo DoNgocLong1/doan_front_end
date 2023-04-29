@@ -1,3 +1,4 @@
+import { IdataCategory } from './../types/productType.type';
 import { ICategory } from './../types/index.type';
 import { instance } from "./instance";
 export const fetchCategory = async () => {
@@ -29,7 +30,7 @@ export const deleteCategory = async (id: number) => {
   return data;
 };
 
-export const editCategory = async (id: number) => {
+export const getCategory = async (id: number) => {
   const data = await instance
     .post("edit-category", { id })
     .then((response) => response)
@@ -38,3 +39,13 @@ export const editCategory = async (id: number) => {
     });
   return data;
 };
+export const updateCategory = async (formData: IdataCategory) => {
+  const data = await instance
+    .post("update-category", formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+
