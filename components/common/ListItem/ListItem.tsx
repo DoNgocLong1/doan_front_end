@@ -1,9 +1,10 @@
 //import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { addItem } from "@/features/cart/cartSlice";
 import { CartItemType } from "@/types/cartType.type";
-import { IProductItem } from "@/types/productType.type";
+import { IProductItem, IProductItemData } from "@/types/productType.type";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Rate } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -68,7 +69,7 @@ const ListItem = ({
         ItemPerRowOnTablet={ItemPerRowOnTablet}
         size={size}
       >
-        {data?.map((item: IProductItem, index) => (
+        {data?.map((item: IProductItemData, index) => (
           <ItemWrapper key={index}>
             {item.discount > 0 && <Discount>-{item.discount}%</Discount>}
             <ItemImageWrapper>
@@ -87,11 +88,12 @@ const ListItem = ({
                 <ProductAction></ProductAction>
               </ProductActionWrapper>
             </ItemImageWrapper>
-            <ItemName
-              onClick={() => handleSelectProduct(item.id)}
-            >
-              {item.name}
-            </ItemName>
+            <Link href={`/product-detail/${item.id}`}>
+              <ItemName
+              >
+                {item.name}
+              </ItemName>
+            </Link>
             <RateWrapper>
               <Rate disabled allowHalf defaultValue={+item.rate} />
               <RateNumber>({item.rate})</RateNumber>

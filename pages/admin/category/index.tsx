@@ -85,7 +85,6 @@ const AdminCategory: React.FC = () => {
     fetchCategoryData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(categoryData)
   const onFinish = async () => {
     const categoryFormData: ICategory = {
       name: categoryGetData.name,

@@ -38,7 +38,7 @@ const Home = () => {
     route.push({
       pathname: "/product",
       query: {
-        id: id.toString(),
+        category: id.toString(),
       }
     });
   };

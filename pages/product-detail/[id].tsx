@@ -61,6 +61,7 @@ const ProductDetail = ({ data }: any) => {
     dispatch(addItem(payloadData));
   };
   if (!productDetailData) return null;
+  console.log(productDetailData)
   return (
     <>
       <Head>
@@ -130,7 +131,7 @@ const ProductDetail = ({ data }: any) => {
         </ProductDetailWrapper>
         <ProductDescription
           ref={desRef}
-          dangerouslySetInnerHTML={{ __html: productDetailData.description }}
+          dangerouslySetInnerHTML={{ __html: productDetailData.parameter }}
         ></ProductDescription>
         <RecommendContainer>
           <RecommendProduct>Recommend Product</RecommendProduct>

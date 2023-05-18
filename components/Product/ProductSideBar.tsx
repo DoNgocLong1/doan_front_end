@@ -109,7 +109,7 @@ const ProductSideBar = ({ showSideBar }: any) => {
       ),
     ]),
   ];
-  const [categoryActive, setCategoryActive] = useState<number>(0);
+  const [categoryActive, setCategoryActive] = useState<number>(+(router?.query?.category || 0));
   console.log(categoryActive);
   return (
     <SideBar>

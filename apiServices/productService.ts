@@ -1,3 +1,4 @@
+import { IProductImage } from "@/types/productType.type";
 import { instance } from "./instance";
 export const fetchProduct = async (params: any = "") => {
   const data = await instance
@@ -47,6 +48,24 @@ export const minMax = async () => {
 export const createProduct = async (formData: any) => {
   const data = await instance
     .post(`products/create-product`, formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const updateProductImages = async (formData: IProductImage) => {
+  const data = await instance
+    .post(`update-product-image`, formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const createProductImages = async (formData: IProductImage) => {
+  const data = await instance
+    .post(`create-product-image`, formData)
     .then((response) => response)
     .catch((error) => {
       console.log(error);

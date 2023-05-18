@@ -13,9 +13,10 @@ import { message } from 'antd';
 import { FeatureWrapper, OptionContainer } from '@/styled/Admin.styled';
 import { useMutation } from 'react-query';
 import { AddIcon, UserId, UserImage, UserItem, UserItemHeader, UserName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper, UserText, Wrapper, EmailWrapper } from '@/styled/AdminUser.styled';
-import { createUser, getAllUser } from '@/apiServices/userServices';
+import { updateUserById, createUser, getAllUser, getUserById, deleteUserById } from '@/apiServices/userServices';
 import { IFetchUserData, IUserCreateData, IUserData } from '@/types/index.type';
 import { DateInput } from '@/styled/Account.styled';
+import { IUser } from '@/types/userType.type';
 
 export const getServerSideProps = async () => {
   const allUser = await getAllUser()
@@ -28,12 +29,23 @@ export const getServerSideProps = async () => {
 interface IAdminUser {
   allUser: IFetchUserData[]
 }
-const AdminUser = ({ allUser }: IAdminUser) => {
+const AdminUser = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [userGetData, setUserGetData] = useState<any>({});
-  console.log(allUser)
-  useEffect(() => {
+  const [userGetData, setUserGetData] = useState<IUser>({
+    fullName: '',
+    email: '',
+    password: '',
+  });
+  const [allUsers, setAllUsers] = useState<any>([])
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  const fetchAllUser = async () => {
+    const allUser = await getAllUser()
+    setAllUsers(allUser?.data)
+    console.log('find')
+  }
+  useEffect(() => {
+    fetchAllUser()
   }, [])
   const createUserMutation: any = useMutation({
     onSuccess: () => {
@@ -50,37 +62,57 @@ const AdminUser = ({ allUser }: IAdminUser) => {
     },
     mutationFn: (userData: IUserCreateData) => createUser(userData)
   })
-  /* const deleteUserMutation: any = useMutation({
+  const UpdateUserMutation: any = useMutation({
     onSuccess: () => {
       messageApi.open({
         type: 'success',
-        content: 'delete category success',
+        content: 'Update category success',
       });
     },
     onError: () => {
       messageApi.open({
         type: 'error',
-        content: 'delete category failed',
+        content: 'Update category failed',
       });
     },
-    mutationFn: (id: number) => deleteCategory(id)
-  }) */
+    mutationFn: (userData: IUser) => updateUserById(userData)
+  })
+  const deleteUserMutation: any = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'delete user success',
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'delete user failed',
+      });
+    },
+    mutationFn: (id: number) => deleteUserById(id)
+  })
   const onFinish = async () => {
-    const userFormData: IUserCreateData = {
+    const userFormData: IUser = {
       fullName: userGetData.fullName,
       email: userGetData.email,
       password: userGetData.password,
       address: userGetData.address,
       phoneNumber: userGetData.phoneNumber,
-      date: userGetData.date,
       roleId: userGetData?.roleId || 2,
-      avatar: userGetData.image,
+      image: userGetData.image,
     }
     createUserMutation.mutate(userFormData)
+    setTimeout(() => {
+      fetchAllUser()
+    },1000)
   };
-  /* const handleDeleteUser = (id: number) => {
+  const handleDeleteUser = (id: number) => {
     deleteUserMutation.mutate(id)
-  } */
+    setTimeout(() => {
+      fetchAllUser()
+    },1000)
+  }
   const onFinishFailed = (errorInfo: any) => {
     messageApi.open({
       type: 'error',
@@ -89,14 +121,41 @@ const AdminUser = ({ allUser }: IAdminUser) => {
   };
 
 
-  /* const handleEditUser = async (id: number) => {
-    const fetchCategoryData: any = await editCategory(id)
-    const { name, image } = fetchCategoryData?.data?.data || {}
+  const handleSelectUser = async (id: number) => {
+    setIsEdit(true)
+    const fetchCategoryData: any = await getUserById(id)
+    const {
+      fullName,
+      email,
+      password,
+      address,
+      phoneNumber,
+      roleId,
+      image
+    } = fetchCategoryData?.data || {}
     setUserGetData({
-      name,
+      id,
+      fullName,
+      email,
+      password,
+      address,
+      phoneNumber,
+      roleId,
       image
     })
-  } */
+  }
+  const handleUpdateUser = async() => {
+    UpdateUserMutation.mutate(userGetData);
+    setTimeout(() => {
+      fetchAllUser()
+    },1000)
+    setUserGetData({
+      fullName: '',
+      email: '',
+      password: '',
+    })
+    setIsEdit(false)
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e?.target?.files?.[0]) {
       const file = e?.target?.files?.[0]
@@ -140,9 +199,9 @@ const AdminUser = ({ allUser }: IAdminUser) => {
           <Form.Item label="Phone number">
             <Input placeholder='input phone number' name="phoneNumber" value={userGetData.phoneNumber || ''} onChange={handleChange} />
           </Form.Item>
-          <Form.Item label="Date of birth">
+          {/* <Form.Item label="Date of birth">
             <DateInput type="date" name="date" value={userGetData.date || ''} onChange={handleChange} />
-          </Form.Item>
+          </Form.Item> */}
           {/* <Form.Item label="Select role ID">
             <Select name="roleId" value={userGetData.date} onChange={handleChange}>
               <Select.Option value="demo">Demo</Select.Option>
@@ -171,7 +230,11 @@ const AdminUser = ({ allUser }: IAdminUser) => {
             </PreviewImageWrapper>
           </Form.Item>
           <Form.Item label="Button" >
+            {isEdit ?
+            <Button onClick={handleUpdateUser}>Update user</Button>
+            :
             <Button htmlType="submit">Add user</Button>
+            }
           </Form.Item>
         </Form>
         <Container>
@@ -220,7 +283,7 @@ const AdminUser = ({ allUser }: IAdminUser) => {
               </UserId>
             </IdWrapper>
           </UserItemHeader>
-          {allUser?.map((item: IFetchUserData) => (
+          {allUsers?.map((item: IFetchUserData) => (
             <UserItem key={item?.id}>
               <IdWrapper>
                 <UserId>{item?.id || 0}</UserId>
@@ -260,8 +323,8 @@ const AdminUser = ({ allUser }: IAdminUser) => {
                 <UserImage src={item?.image || ''} />
               </Wrapper>
               <FeatureWrapper>
-                <EditOutlined /* onClick={() => handleEditUser(item?.id)} */ />
-                <DeleteOutlined /* onClick={() => handleDeleteUser(item?.id)} */ />
+                <EditOutlined onClick={() => handleSelectUser(item?.id)} />
+                <DeleteOutlined onClick={() => handleDeleteUser(item?.id)} />
               </FeatureWrapper>
             </UserItem>
           ))}

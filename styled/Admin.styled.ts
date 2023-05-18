@@ -60,6 +60,15 @@ export const SectionInner = styled.div`
   width: 100%;
   min-height: 100%;
   position: relative;
+  overflow: hidden;
+`;
+export const AdminImg = styled.img`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  object-fit: cover;
 `;
 export const Button = styled.button`
   position: absolute;
