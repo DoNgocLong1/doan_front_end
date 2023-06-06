@@ -25,6 +25,7 @@ import useCart from "@/hooks/useCart";
 import { useSelector } from "react-redux";
 import { selectAuth } from "@/features/auth/authSlice";
 import { useRouter } from "next/router";
+import useShowDropDown from "@/hooks/useShowDropDown";
 const ListItemLite = () => {
   const router = useRouter()
   const {
@@ -35,28 +36,12 @@ const ListItemLite = () => {
     orderList,
     totalPrice,
   } = useCart();
+  const { isShowCart, handleShowCart } = useShowDropDown();
+
   const { isAuthenticated } = useSelector(selectAuth);
   const onOrder = async () => {
-    //!isAuthenticated ? alert('you are not login yet') : router.push('/cart')
-    /* const params: any = {
-      user_id: 1,
-      amount: totalPrice,
-      obj: orderList,
-    };
-    const config = {
-      headers: {
-        "Content-Type": `application/json`,
-      },
-    };
-    await instance
-      .post("order", JSON.stringify(params), config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      }); */
     router.push('/cart')
+    handleShowCart()
   };
   return (
     <Container>

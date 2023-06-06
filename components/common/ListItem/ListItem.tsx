@@ -46,7 +46,6 @@ const ListItem = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const handleAddItem = (payload: any): void => {
-    console.log(payload.Image_Products.image)
     const payloadData: CartItemType = {
       id: payload.id,
       img: payload.Image_Products.image || '',
@@ -107,7 +106,7 @@ const ListItem = ({
                   </AddButton>
                 }
                 messageType={"successful"}
-                messageContent={"add to cart"}
+                messageContent={"add to cart succeed"}
               />
             </ItemBottom>
           </ItemWrapper>

@@ -19,7 +19,24 @@ import useCategory from '@/hooks/useCategory';
 import { AddIcon, CategoryId, CategoryImage, CategoryItem, CategoryItemHeader, CategoryName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper } from '@/styled/AdminCategory.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories, selectCategory } from '@/features/admin/categorySlice';
+import { getCookie } from '@/helper';
+import { getUser } from '@/apiServices/userServices';
 
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token);
+  const role = fetchUser?.data?.roleId || 2;
+  if (role === 2) {
+    return {
+      notFound: true
+    }
+  }
+  return {
+    props: {
+    }
+  }
+}
 const AdminCategory: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [categoryGetData, setCategoryGetData] = useState<IdataCategory>({
@@ -118,7 +135,6 @@ const AdminCategory: React.FC = () => {
     setIsEdit(true)
     const fetchCategoryData: any = await getCategory(id)
     const { name, image } = fetchCategoryData?.data?.data || {};
-    console.log()
     setCategoryGetData({
       id,
       name,

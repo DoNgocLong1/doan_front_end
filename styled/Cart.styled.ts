@@ -159,6 +159,9 @@ export const NoteWrapper = styled.div`
       font-size: 1em;
     }
   }
+  .ant-input-disabled {
+    color: ${color.whiteColor};
+  }
 `;
 export const NoteTitle = styled.p`
   font-size: 1.5em;

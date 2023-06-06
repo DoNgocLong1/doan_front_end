@@ -38,6 +38,7 @@ export const RemoveButton = styled.button`
   padding: 0.2em 0.3em;
   border: none;
   font-size: 1em;
+  color: ${color.backgroundItemColor};
   background-color: transparent;
   :hover {
     color: ${color.orange};

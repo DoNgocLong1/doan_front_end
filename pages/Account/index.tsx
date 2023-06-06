@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   AccountContainer,
+  AddIcon,
   Container,
   DateInput,
   Feature,
   FeatureWrapper,
+  FileUpload,
+  PreviewImage,
+  PreviewImageWrapper,
   Sidebar,
   SidebarContainer,
   SidebarHeader,
@@ -23,6 +27,7 @@ import type { GetServerSideProps } from 'next'
 import { getCookie } from "@/helper";
 import { useMutation } from "react-query";
 import { message } from 'antd';
+import Head from "next/head";
 export const getServerSideProps = async (contexts: any) => {
   const tokenType = contexts.req.headers.cookie
   const token = getCookie('token', tokenType)
@@ -43,7 +48,6 @@ interface IAccount {
 }
 const Account = ({ data }: IAccount) => {
   const [userData, setUserData] = useState<IUserData>(data)
-  console.log(userData)
   const [isProfileComponent, setIsProfileComponent] = useState<boolean>(true);
   const [messageApi, contextHolder] = message.useMessage();
   const token: string = getCookie('token') || ''
@@ -53,8 +57,11 @@ const Account = ({ data }: IAccount) => {
     setUserData(fetchUser?.data || {})
   }
   const postUpdateUser = async (userFormData: IUserData) => {
-    updateUser(userFormData, token)
+    await updateUser(userFormData, token)
     setIsUpdate(!isUpdate)
+    setTimeout(() => {
+      reFetchingData()
+    })
   }
   useEffect(() => {
     reFetchingData()
@@ -75,14 +82,13 @@ const Account = ({ data }: IAccount) => {
     mutationFn: (userFormData: IUserData) => postUpdateUser(userFormData)
   })
   const onFinish = async (values: any) => {
-    const avatar: string = values?.avatar?.file?.thumbUrl || ''
     const userFormData: IUserData = {
       fullName: userData.fullName,
       email: userData.email,
       address: userData.address,
       phoneNumber: userData.phoneNumber,
       date: userData.date,
-      image: avatar,
+      image: userData.image,
     }
     updateUserMutation.mutate(userFormData)
   }
@@ -99,95 +105,124 @@ const Account = ({ data }: IAccount) => {
     }
   }
   return (
-    <Container>
-      {contextHolder}
-      <Sidebar>
-        <SidebarContainer>
-          <SidebarHeader>
-            <SidebarHeaderImg src={userData?.image || '/user.png'} />
-            <SidebarInfoWrapper>
-              <UserName>{userData?.fullName || ""}</UserName>
-              <UserEmail>{userData?.email || ""}</UserEmail>
-            </SidebarInfoWrapper>
-          </SidebarHeader>
-        </SidebarContainer>
-        <FeatureWrapper>
-          <Feature onClick={() => setIsProfileComponent(true)}>Profile</Feature>
-          <Feature onClick={() => setIsProfileComponent(false)}>
-            Change Password
-          </Feature>
-        </FeatureWrapper>
-      </Sidebar>
-      <AccountContainer>
-        {!isProfileComponent ? (
-          <ChangePass />
-        ) : (
-          <Form
-            layout="horizontal"
-            size="large"
-            onFinish={onFinish}
-          >
-            <Form.Item
-              label="Full name"
-              rules={[
-                { whitespace: true, message: "Please input your full name!" },
-                { max: 200, message: "Please input less than 200 characters" },
-              ]}
+    <>
+      <Head>
+        <meta data-n-head="ssr" data-hid="description" name="description" content="User account" />
+        <link
+          data-n-head="ssr"
+          data-hid="i18n-can"
+          rel="canonical"
+          href=''
+        />
+        <title>User account</title>
+      </Head>
+      <Container>
+        {contextHolder}
+        <Sidebar>
+          <SidebarContainer>
+            <SidebarHeader>
+              <SidebarHeaderImg src={userData?.image || '/user.png'} />
+              <SidebarInfoWrapper>
+                <UserName>{userData?.fullName || ""}</UserName>
+                <UserEmail>{userData?.email || ""}</UserEmail>
+              </SidebarInfoWrapper>
+            </SidebarHeader>
+          </SidebarContainer>
+          <FeatureWrapper>
+            <Feature onClick={() => setIsProfileComponent(true)}>Profile</Feature>
+            <Feature onClick={() => setIsProfileComponent(false)}>
+              Change Password
+            </Feature>
+          </FeatureWrapper>
+        </Sidebar>
+        <AccountContainer>
+          {!isProfileComponent ? (
+            <ChangePass />
+          ) : (
+            <Form
+              layout="horizontal"
+              size="large"
+              onFinish={onFinish}
             >
-              <Input
-                value={userData.fullName || ''}
-                placeholder="Full name"
-                name="fullName"
-                onChange={handleChange}
-              />
-            </Form.Item>
-            <Form.Item label="Email">
-              <Input
-                placeholder="Email"
-                value={userData.email || ''}
-                disabled
-              />
-            </Form.Item>
-            <Form.Item label="Address">
-              <Input
-                value={userData.address || ''}
-                placeholder="Address"
-                name="address"
-                onChange={handleChange} />
-            </Form.Item>
-            <Form.Item
-              label="PhoneNumber"
-              rules={[
-                { max: 10, message: "Phone number is less than 10 numbers" },
-              ]}
-            >
-              <Input
-                placeholder="Phone number"
-                name="phoneNumber"
-                value={userData.phoneNumber || 0}
-                onChange={handleChange}
-              />
-            </Form.Item>
-            <Form.Item label="Date of birth">
-              <DateInput
-                type="date"
-                value={userData.date || ''}
-                name="date"
-                onChange={handleChange}
-              />
-            </Form.Item>
-            <Form.Item label="Upload Avatar" name="avatar">
-              <Upload listType="picture-card">
-                <PlusOutlined />
-              </Upload>
-            </Form.Item>
-            <Form.Item>
-              <Button htmlType="submit">Update</Button>
-            </Form.Item>
-          </Form>
-        )}
-      </AccountContainer>
-    </Container >
+              <Form.Item
+                label="Full name"
+                rules={[
+                  { whitespace: true, message: "Please input your full name!" },
+                  { max: 200, message: "Please input less than 200 characters" },
+                ]}
+              >
+                <Input
+                  value={userData.fullName || ''}
+                  placeholder="Full name"
+                  name="fullName"
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item label="Email">
+                <Input
+                  placeholder="Email"
+                  value={userData.email || ''}
+                  disabled
+                />
+              </Form.Item>
+              <Form.Item label="Address">
+                <Input
+                  value={userData.address || ''}
+                  placeholder="Address"
+                  name="address"
+                  onChange={handleChange} />
+              </Form.Item>
+              <Form.Item
+                label="PhoneNumber"
+                rules={[
+                  { max: 10, message: "Phone number is less than 10 numbers" },
+                ]}
+              >
+                <Input
+                  placeholder="Phone number"
+                  name="phoneNumber"
+                  value={userData.phoneNumber || 0}
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item label="Date of birth">
+                <DateInput
+                  type="date"
+                  value={userData.date || ''}
+                  name="date"
+                  onChange={handleChange}
+                />
+              </Form.Item>
+              <Form.Item label="Upload Avatar">
+                <FileUpload
+                  type="file"
+                  id="file"
+                  name="image"
+                  onChange={handleChange}
+
+                />
+                <PreviewImageWrapper>
+                  <AddIcon htmlFor="file">
+                    {userData.image ?
+                      <PreviewImage
+                        src={userData.image}
+                        alt="preview"
+                        title="preview"
+                        width="100"
+                        height="100"
+                      /> : "+"}
+
+                  </AddIcon>
+                </PreviewImageWrapper>
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit">Update</Button>
+              </Form.Item>
+            </Form>
+          )}
+        </AccountContainer>
+      </Container >
+    </>
   );
 };
 

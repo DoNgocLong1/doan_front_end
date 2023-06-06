@@ -14,8 +14,25 @@ import { createProduct, createProductImages, updateProductImages } from '@/apiSe
 import { useMutation } from 'react-query';
 import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper } from '@/styled/AdminProduct.styled';
 import { IProductAddItem, IProductImage, IProductItem } from '@/types/productType.type';
+import { getCookie } from '@/helper';
+import { getUser } from '@/apiServices/userServices';
 const { TextArea } = Input;
 
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token);
+  const role = fetchUser?.data?.roleId || 2;
+  if (role === 2) {
+    return {
+      notFound: true
+    }
+  }
+  return {
+    props: {
+    }
+  }
+}
 const FormDisabledDemo: React.FC = () => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [getProductData, setGetProductData] = useState<IProductImage>({
@@ -50,7 +67,6 @@ const FormDisabledDemo: React.FC = () => {
       productId: getProductData.productId,
       image: getProductData.image,
     };
-    console.log(productData)
     createProductImageMutation.mutate(productData)
     //await createProduct(productData)
   };
@@ -72,9 +88,7 @@ const FormDisabledDemo: React.FC = () => {
       setGetProductData((userGetData: any) => ({ ...userGetData, [e.target.name]: e.target.value }));
     }
   };
-  console.log(getProductData)
   const handleUpdateImage = async () => {
-    console.log(getProductData)
     await updateProductImages(getProductData)
   }
   return (

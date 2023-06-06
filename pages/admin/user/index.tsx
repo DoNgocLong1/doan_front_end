@@ -4,7 +4,6 @@ import {
   Form,
   Input,
   Button,
-  Select,
   Upload,
   DatePicker,
 } from 'antd';
@@ -12,22 +11,31 @@ import { message } from 'antd';
 
 import { FeatureWrapper, OptionContainer } from '@/styled/Admin.styled';
 import { useMutation } from 'react-query';
-import { AddIcon, UserId, UserImage, UserItem, UserItemHeader, UserName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper, UserText, Wrapper, EmailWrapper } from '@/styled/AdminUser.styled';
-import { updateUserById, createUser, getAllUser, getUserById, deleteUserById } from '@/apiServices/userServices';
+import { AddIcon, UserId, UserImage, UserItem, UserItemHeader, UserName, Container, FileUpload, IdWrapper, ImageWrapper, NameWrapper, PreviewImage, PreviewImageWrapper, UserText, Wrapper, EmailWrapper, RoleIdSelect, RoleOption } from '@/styled/AdminUser.styled';
+import { updateUserById, createUser, getAllUser, getUserById, deleteUserById, getUser } from '@/apiServices/userServices';
 import { IFetchUserData, IUserCreateData, IUserData } from '@/types/index.type';
 import { DateInput } from '@/styled/Account.styled';
 import { IUser } from '@/types/userType.type';
+import Notification from '@/components/Notification';
+import { getCookie } from '@/helper';
 
-export const getServerSideProps = async () => {
-  const allUser = await getAllUser()
-  return {
-    props: {
-      allUser: allUser?.data || {}
-    }
-  }
-}
 interface IAdminUser {
   allUser: IFetchUserData[]
+}
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token);
+  const role = fetchUser?.data?.roleId || 2;
+  if (role === 2) {
+    return {
+      notFound: true
+    }
+  }
+  return {
+    props: {
+    }
+  }
 }
 const AdminUser = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -38,11 +46,21 @@ const AdminUser = () => {
   });
   const [allUsers, setAllUsers] = useState<any>([])
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [scroll, setScroll] = useState<boolean>(false);
+  useEffect(() => {
+    const onScroll = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scroll]);
 
   const fetchAllUser = async () => {
     const allUser = await getAllUser()
     setAllUsers(allUser?.data)
-    console.log('find')
   }
   useEffect(() => {
     fetchAllUser()
@@ -51,13 +69,13 @@ const AdminUser = () => {
     onSuccess: () => {
       messageApi.open({
         type: 'success',
-        content: 'create category success',
+        content: 'create user success',
       });
     },
     onError: () => {
       messageApi.open({
         type: 'error',
-        content: 'create category failed',
+        content: 'create user failed',
       });
     },
     mutationFn: (userData: IUserCreateData) => createUser(userData)
@@ -66,13 +84,13 @@ const AdminUser = () => {
     onSuccess: () => {
       messageApi.open({
         type: 'success',
-        content: 'Update category success',
+        content: 'Update user success',
       });
     },
     onError: () => {
       messageApi.open({
         type: 'error',
-        content: 'Update category failed',
+        content: 'Update user failed',
       });
     },
     mutationFn: (userData: IUser) => updateUserById(userData)
@@ -92,7 +110,7 @@ const AdminUser = () => {
     },
     mutationFn: (id: number) => deleteUserById(id)
   })
-  const onFinish = async () => {
+  const handleCreateUser = async () => {
     const userFormData: IUser = {
       fullName: userGetData.fullName,
       email: userGetData.email,
@@ -105,13 +123,24 @@ const AdminUser = () => {
     createUserMutation.mutate(userFormData)
     setTimeout(() => {
       fetchAllUser()
-    },1000)
+    }, 1000)
   };
-  const handleDeleteUser = (id: number) => {
-    deleteUserMutation.mutate(id)
+  const handleSetDeleteUser = async (id: number) => {
+    const fetchUserData: any = await getUserById(id)
+    const data = fetchUserData?.data || {}
+    if (data.roleId === 1) {
+      setIsAdmin(true)
+    } else {
+      setUserId(id);
+      setIsDelete(true);
+    }
+  }
+  const handleDeleteUser = () => {
+    deleteUserMutation.mutate(userId)
+    setIsDelete(false)
     setTimeout(() => {
       fetchAllUser()
-    },1000)
+    }, 1000)
   }
   const onFinishFailed = (errorInfo: any) => {
     messageApi.open({
@@ -123,7 +152,8 @@ const AdminUser = () => {
 
   const handleSelectUser = async (id: number) => {
     setIsEdit(true)
-    const fetchCategoryData: any = await getUserById(id)
+    setScroll(!scroll);
+    const fetchUserData: any = await getUserById(id)
     const {
       fullName,
       email,
@@ -132,7 +162,7 @@ const AdminUser = () => {
       phoneNumber,
       roleId,
       image
-    } = fetchCategoryData?.data || {}
+    } = fetchUserData?.data || {}
     setUserGetData({
       id,
       fullName,
@@ -144,11 +174,11 @@ const AdminUser = () => {
       image
     })
   }
-  const handleUpdateUser = async() => {
+  const handleUpdateUser = async () => {
     UpdateUserMutation.mutate(userGetData);
     setTimeout(() => {
       fetchAllUser()
-    },1000)
+    }, 1000)
     setUserGetData({
       fullName: '',
       email: '',
@@ -156,7 +186,7 @@ const AdminUser = () => {
     })
     setIsEdit(false)
   }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     if (e?.target?.files?.[0]) {
       const file = e?.target?.files?.[0]
       const reader = new FileReader()
@@ -172,8 +202,22 @@ const AdminUser = () => {
     <>
       <OptionContainer>
         {contextHolder}
+        <Notification
+          isActive={isDelete}
+          headerText="Administration Warning"
+          mainContent={`Delete account has id ${userId} ?`}
+          buttonText="Ok"
+          onClick={handleDeleteUser}
+        />
+        <Notification
+          isActive={isAdmin}
+          headerText="Administration Warning"
+          mainContent={`You wanna delete admin account ????? :)))))
+          You can't delete admin account`}
+          buttonText="Ok"
+          onClick={() => setIsAdmin(false)}
+        />
         <Form
-          onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
           <Form.Item label="Full name">
@@ -207,13 +251,22 @@ const AdminUser = () => {
               <Select.Option value="demo">Demo</Select.Option>
             </Select>
           </Form.Item> */}
+          <Form.Item label="Role">
+            <RoleIdSelect
+              name="roleId"
+              value={userGetData.roleId || 2}
+              onChange={handleChange}
+            >
+              <RoleOption>1</RoleOption>
+              <RoleOption>2</RoleOption>
+            </RoleIdSelect>
+          </Form.Item>
           <Form.Item label="Upload">
             <FileUpload
               type="file"
               id="file"
               name="image"
               onChange={handleChange}
-
             />
             <PreviewImageWrapper>
               <AddIcon htmlFor="file">
@@ -231,9 +284,9 @@ const AdminUser = () => {
           </Form.Item>
           <Form.Item label="Button" >
             {isEdit ?
-            <Button onClick={handleUpdateUser}>Update user</Button>
-            :
-            <Button htmlType="submit">Add user</Button>
+              <Button onClick={handleUpdateUser}>Update user</Button>
+              :
+              <Button onClick={handleCreateUser}>Add user</Button>
             }
           </Form.Item>
         </Form>
@@ -324,7 +377,7 @@ const AdminUser = () => {
               </Wrapper>
               <FeatureWrapper>
                 <EditOutlined onClick={() => handleSelectUser(item?.id)} />
-                <DeleteOutlined onClick={() => handleDeleteUser(item?.id)} />
+                <DeleteOutlined onClick={() => handleSetDeleteUser(item?.id)} />
               </FeatureWrapper>
             </UserItem>
           ))}

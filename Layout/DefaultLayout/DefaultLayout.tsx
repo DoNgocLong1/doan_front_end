@@ -11,10 +11,10 @@ const DefaultLayout = ({ children }: IDefaultLayout) => {
   const { pathname } = useRouter();
   return (
     <>
-    { pathname === "/login" ? (
-      <>
-        {children}
-      </>
+      {pathname === "/login" || pathname === "/registry" ? (
+        <>
+          {children}
+        </>
       ) : (
         <Container>
           <Header />

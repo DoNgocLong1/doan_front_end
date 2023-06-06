@@ -9,6 +9,7 @@ import {
   Registry,
   ButtonWrapper,
   ErrorMessage,
+  LoginButton,
 } from "../../styled/Login.styled";
 import { UserOutlined } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons/lib/icons";
@@ -18,6 +19,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/features/auth/authSlice";
 import { setCookie } from "@/helper";
+import Head from "next/head";
 const Login = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState<string>("");
@@ -30,7 +32,6 @@ const Login = () => {
     await instance
       .post("login", loginData)
       .then((res) => {
-        console.log(res.data.token);
         if (res.data.errCode !== 0) {
           console.log("login failed");
           return;
@@ -50,51 +51,67 @@ const Login = () => {
     console.log("Failed:", errorInfo);
   };
   return (
-    <Container>
-      <LoginWrapper>
-        <LoginTitle>Welcome to Predator</LoginTitle>
-        <Form
-          layout="horizontal"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            name="username"
-            hasFeedback
-            rules={[
-              { required: true, message: "Please input your Username!" },
-              { max: 200, message: "please input less than 200 characters" },
-            ]}
+    <>
+      <Head>
+        <meta data-n-head="ssr" data-hid="description" name="description" content="login page" />
+        <link
+          data-n-head="ssr"
+          data-hid="i18n-can"
+          rel="canonical"
+          href=''
+        />
+        <title>Predator Login</title>
+      </Head>
+      <Container>
+        <LoginWrapper>
+          <LoginTitle>Welcome to Predator</LoginTitle>
+          <Form
+            layout="horizontal"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <Input prefix={<UserOutlined />} placeholder="Username" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            hasFeedback
-            rules={[
-              { required: true, message: "Please input your password!" },
-              { max: 200, message: "please input less than 200 characters" },
-            ]}
-          >
-            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-          </Form.Item>
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <LoginFeatureLogin>
-            <ForgotPassword>Forgot password</ForgotPassword>
-            <Link href="/registry"></Link>
-            <Registry>Registry</Registry>
-          </LoginFeatureLogin>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          <ButtonWrapper name="submit" wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </ButtonWrapper>
-        </Form>
-      </LoginWrapper>
-    </Container>
+            <Form.Item
+              name="username"
+              hasFeedback
+              rules={[
+                { required: true, message: "Please input your email!" },
+                { max: 200, message: "please input less than 200 characters" },
+                { type: 'email', message: "Email invalid" }
+              ]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="Email" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              hasFeedback
+              rules={[
+                { required: true, message: "Please input your password!" },
+                { max: 200, message: "please input less than 200 characters" },
+              ]}
+            >
+              <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+            </Form.Item>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            <LoginFeatureLogin>
+              <Link href="/">
+                <ForgotPassword>Start Purchase</ForgotPassword>
+              </Link>
+              <Link href="/registry">
+                <Registry>Registry</Registry>
+              </Link>
+            </LoginFeatureLogin>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <ButtonWrapper name="submit" wrapperCol={{ offset: 8, span: 16 }}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </ButtonWrapper>
+          </Form>
+        </LoginWrapper>
+      </Container>
+    </>
   );
 };
 export default Login;

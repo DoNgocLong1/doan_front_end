@@ -35,7 +35,7 @@ export interface IUserCreateData {
   address?: string,
   phoneNumber?: number,
   date?: string,
-  roleId: number,
+  roleId?: number,
   avatar?: string,
 }
 

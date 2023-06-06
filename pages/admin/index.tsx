@@ -1,11 +1,23 @@
 
+import { getUser } from '@/apiServices/userServices'
+import { getCookie } from '@/helper'
 import { AdminContainer, AdminImg, AdminSection, Button, SectionInner } from '@/styled/Admin.styled'
 import Link from 'next/link'
 import React from 'react'
 
-export const getServerSideProps = () => {
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token);
+  const role = fetchUser?.data?.roleId || 2;
+  if (role === 2) {
+    return {
+      notFound: true
+    }
+  }
   return {
-    props: {}
+    props: {
+    }
   }
 }
 const Admin = () => {

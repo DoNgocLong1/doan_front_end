@@ -59,10 +59,17 @@ const cartSlice = createSlice({
       state.listLength = 0
       state.totalPrice = 0
     },
+    AddAllItem(state: IInitialState, action: PayloadAction<any>) {
+      const listLength = action.payload.reduce((count: number, item: any) => {
+        return count += item.count
+      }, 0)
+      state.listLength = listLength
+      state.cartList = [...action.payload]
+    },
   },
 });
 //action
-export const { addItem, removeItem, decreaseItem, removeAllItem } = cartSlice.actions;
+export const { addItem, removeItem, decreaseItem, removeAllItem, AddAllItem } = cartSlice.actions;
 // reducer
 export default cartSlice.reducer;
 //state

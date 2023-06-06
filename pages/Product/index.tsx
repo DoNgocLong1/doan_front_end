@@ -19,6 +19,7 @@ import ProductSideBar from "@/components/Product/ProductSideBar";
 import Head from "next/head";
 
 const Product = () => {
+
   const { productData, totalItem, itemPerPage, productQuery } = useProduct();
   const [showSideBar, setShowSideBar] = useState<boolean>(false);
   const { query } = useRouter();
@@ -32,8 +33,14 @@ const Product = () => {
   return (
     <>
       <Head>
-        <title>Predator-Product</title>
         <meta data-n-head="ssr" data-hid="description" name="description" content="product page" />
+        <link
+          data-n-head="ssr"
+          data-hid="i18n-can"
+          rel="canonical"
+          href=''
+          />
+          <title>Predator Products</title>
       </Head>
       <Container>
         <Overlay isShow={showSideBar} />

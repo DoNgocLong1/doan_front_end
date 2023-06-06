@@ -87,4 +87,12 @@ export const PreviewImage = styled.img`
   height: 100%;
   object-fit: contain;
 `;
+export const RoleIdSelect = styled.select`
+  padding: 1em 1.5em;
+  color: ${color.whiteColor};
+  background-color: ${color.backgroundItemColor};
+`;
+export const RoleOption = styled.option`
+
+`;
 

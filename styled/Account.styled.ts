@@ -122,3 +122,45 @@ export const DateInput = styled.input`
   padding: 0.5em;
   font-size: 1.2em;
 `;
+export const UserImage = styled.img`
+  width: 10em;
+  height: 100%;
+  object-fit: contain;
+`;
+export const FileUpload = styled.input`
+  display: none !important;
+`;
+export const PreviewImageWrapper = styled.div`
+  width: 10em;
+  height: 10em;
+  margin: 1em 0;
+  border: 1px solid ${color.whiteColor};
+  border-radius: 2em;
+
+`;
+export const AddIcon = styled.label`
+  width: 100%;
+  height: 100%;
+  color: ${color.whiteColor};
+  font-size: 2em !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+export const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: 1em;
+  background-color: transparent;
+  padding: 1em 0;
+`;

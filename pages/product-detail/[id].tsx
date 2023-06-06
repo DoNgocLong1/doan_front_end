@@ -51,7 +51,6 @@ const ProductDetail = ({ data }: any) => {
   const [img, setImg] = useState<string>(images?.[0]?.image || '');
   const dispatch = useDispatch();
   const handleAddItem = (): void => {
-    console.log(product)
     const payloadData: CartItemType = {
       id: product.id,
       img: images?.[0]?.image || '',
@@ -61,7 +60,6 @@ const ProductDetail = ({ data }: any) => {
     dispatch(addItem(payloadData));
   };
   if (!productDetailData) return null;
-  console.log(productDetailData)
   return (
     <>
       <Head>
@@ -69,9 +67,9 @@ const ProductDetail = ({ data }: any) => {
         <meta data-n-head="ssr" data-hid="description" name="description" content={productDetailData.name} />
         <link
           data-n-head="ssr"
+          data-hid="i18n-can"
           rel="canonical"
           href=""
-          key="canonical"
         />
       </Head>
       <Container>

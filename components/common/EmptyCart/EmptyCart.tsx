@@ -41,8 +41,7 @@ export const GotoProductPage = styled.div`
 interface IEmptyCart {
   des: string
 }
-const EmptyItem = ({ des } :IEmptyCart) => {
-  console.log(des)
+const EmptyItem = ({ des }: IEmptyCart) => {
   return (
     <EmptyContainer>
       <Empty description={des} />

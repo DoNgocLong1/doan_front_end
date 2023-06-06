@@ -38,6 +38,8 @@ import {
   UserImg,
   UserName,
 } from "./Header.styled";
+import useShowDropDown from "@/hooks/useShowDropDown";
+import { getCookie } from "@/helper";
 const Logout = ({ setIsLogin }: any) => {
   const { isAuthenticated } = useSelector(selectAuth);
   const router = useRouter();
@@ -50,9 +52,18 @@ const Logout = ({ setIsLogin }: any) => {
     router.push("/");
   };
 
-  const { userData } = useUser()
-  console.log(userData)
-  const [show, setShow] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>({});
+  const handleFetchUser = async () => {
+    const token = getCookie('token');
+    const fetchUser = await getUser(token);
+    setUserData(fetchUser?.data || {})
+  }
+  useEffect(() => {
+    handleFetchUser()
+  }, [])
+  //const [show, setShow] = useState<boolean>(false);
+  const { isShowUserMenu, handleShowUserMenu } = useShowDropDown()
+
   return (
     <Feature>
       <UserImg
@@ -61,13 +72,11 @@ const Logout = ({ setIsLogin }: any) => {
         title="avatar"
         width="50"
         height="50"
-        onClick={() => {
-          setShow((prev) => (prev ? false : true));
-        }}
+        onClick={handleShowUserMenu}
       />
       <UserName>{userData?.fullName || ''}  </UserName>
-      <PropDown isShow={show} translateX="-55%">
-        <UserFeature>
+      <PropDown isShow={isShowUserMenu} translateX="-55%">
+        <UserFeature onClick={handleShowUserMenu}>
           <Link href="/account">
             <UserFeatureWrapper>
               <UserFeatureIcon>
@@ -82,20 +91,25 @@ const Logout = ({ setIsLogin }: any) => {
             </UserFeatureIcon>
             <UserFeatureName onClick={handleLogout}>Logout</UserFeatureName>
           </UserFeatureWrapper>
-          <UserFeatureWrapper>
-            <UserFeatureIcon>
-              <HistoryOutlined />
-            </UserFeatureIcon>
-            <UserFeatureName>Orders history </UserFeatureName>
-          </UserFeatureWrapper>
-          <Link href="/admin">
+          <Link href="/orders-history">
             <UserFeatureWrapper>
               <UserFeatureIcon>
-                <AliwangwangOutlined />
+                <HistoryOutlined />
               </UserFeatureIcon>
-              <UserFeatureName >Admin</UserFeatureName>
+              <UserFeatureName>Orders history </UserFeatureName>
             </UserFeatureWrapper>
           </Link>
+          {userData.roleId === 1 &&
+            <Link href="/admin">
+              <UserFeatureWrapper>
+                <UserFeatureIcon>
+                  <AliwangwangOutlined />
+                </UserFeatureIcon>
+
+                <UserFeatureName >Admin</UserFeatureName>
+              </UserFeatureWrapper>
+            </Link>
+          }
         </UserFeature>
       </PropDown>
     </Feature>
@@ -103,9 +117,9 @@ const Logout = ({ setIsLogin }: any) => {
 };
 const Header = () => {
   const { listLength } = useSelector(selectCartList);
-  const [show, setShow] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(false);
+  const { isShowCart, handleShowCart } = useShowDropDown();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const getToken = localStorage.getItem('token') || ''
@@ -131,9 +145,7 @@ const Header = () => {
       <FeatureWrapper>
         <Feature>
           <IconWrapper
-            onClick={() => {
-              setShow((prev) => (prev ? false : true));
-            }}
+            onClick={handleShowCart}
           >
             <ShoppingCartOutlined />
           </IconWrapper>
@@ -141,7 +153,7 @@ const Header = () => {
           <QuantitySpan>
             <Quantity>{listLength}</Quantity>
           </QuantitySpan>
-          <PropDown isShow={show} translateX="-70%">
+          <PropDown isShow={isShowCart} translateX="-70%">
             <ListItemLite />
           </PropDown>
         </Feature>

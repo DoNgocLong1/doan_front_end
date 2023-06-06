@@ -14,8 +14,24 @@ import { createProduct } from '@/apiServices/productService';
 import { useMutation } from 'react-query';
 import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper } from '@/styled/AdminProduct.styled';
 import { IProductAddItem, IProductItem } from '@/types/productType.type';
+import { getCookie } from '@/helper';
+import { getUser } from '@/apiServices/userServices';
 const { TextArea } = Input;
-
+export const getServerSideProps = async (contexts: any) => {
+  const tokenType = contexts.req.headers.cookie
+  const token = getCookie('token', tokenType)
+  const fetchUser = await getUser(token);
+  const role = fetchUser?.data?.roleId || 2;
+  if (role === 2) {
+    return {
+      notFound: true
+    }
+  }
+  return {
+    props: {
+    }
+  }
+}
 const FormDisabledDemo: React.FC = () => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [getProductData, setGetProductData] = useState<IProductItem>({
@@ -54,7 +70,6 @@ const FormDisabledDemo: React.FC = () => {
     mutationFn: (productData: any) => createProduct(productData)
   })
   const onFinish = async (values: any) => {
-    console.log(values)
     const {
       name,
       categoryId,
@@ -79,7 +94,6 @@ const FormDisabledDemo: React.FC = () => {
       discount: Number(discount),
       sold
     };
-    console.log(productData)
     createProductMutation.mutate(productData)
     //await createProduct(productData)
   };

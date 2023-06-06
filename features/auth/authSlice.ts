@@ -21,12 +21,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state: IInitialState, action: PayloadAction<User>) => {
-      const {image, ...user} = action.payload
+      const { image, ...user } = action.payload
       state.isAuthenticated = true;
       state.user = user;
     },
     logout: (state: IInitialState, action: PayloadAction<boolean>) => {
-      console.log("logout");
       state.isAuthenticated = action.payload;
       state.user = null;
     },

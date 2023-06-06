@@ -74,7 +74,7 @@ export const ButtonWrapper = styled(Form.Item)`
   display: flex;
   justify-content: center;
 `;
-export const ForgotPassword = styled.a`
+export const ForgotPassword = styled.p`
   font-size: 1em;
   text-decoration: underline;
   color: #474747;
@@ -88,4 +88,19 @@ export const ErrorMessage = styled.p`
   color: red;
   font-size: 1em;
   background-color: transparent;
+`;
+export const LoginButton = styled.div`
+  color: ${color.whiteColor};
+  font-size: 1.5em;
+  background-color: ${color.backgroundColor};
+  padding: 1em 2em;
+  border: 1px solid ${color.whiteColor};
+  width: fit-content;
+  margin-left: 2em;
+  transition: 0.5s ease;
+  font-weight: bold;
+  :hover {
+    color: #000;
+    background-color: ${color.whiteColor};
+  }
 `;

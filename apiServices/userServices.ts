@@ -10,14 +10,20 @@ export const updateUserProfile = async (userData: any, config: any) => {
     });
   return data;
 };
-export const changePassword = async (userData: any, config: any) => {
-  const data = await instance
-    .post("change-pass", userData, config)
-    .then((response) => response)
-    .catch((error) => {
-      console.log(error);
-    });
-  return data;
+
+export const changePassword = async (formData: any, token: string) => {
+  try {
+    const data = await instance.post("user/change-password", formData, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      }
+    })
+    console.log(data)
+    return data;
+  } catch (e: any) {
+    console.log(e)
+    return e.response;
+  }
 };
 export const getUser = async (token: any) => {
   const config = {
@@ -40,6 +46,7 @@ export const createUser = async (formData: IUserCreateData) => {
     .then((response) => response)
     .catch((error) => {
       console.log(error);
+      return error.response
     });
   return data;
 };
@@ -85,7 +92,7 @@ export const updateUserById = async (formData: IUser) => {
 }
 export const deleteUserById = async (id: number) => {
   const data = await instance
-    .patch('user/delete', {id})
+    .patch('user/delete', { id })
     .then((response) => response)
     .catch((error) => {
       console.log(error);
