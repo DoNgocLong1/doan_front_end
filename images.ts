@@ -1,4 +1,3 @@
-import loginImage from "./public/login.jpg";
 import loginBackground from "./public/loginBackground.jpg";
 import slideShow1 from "./public/slider1.jpg";
 import slideShow2 from "./public/slider2.jpg";
@@ -6,12 +5,12 @@ import slideShow3 from "./public/slider3.jpg";
 import slideShow4 from "./public/slider4.jpg";
 import slideShow5 from "./public/slider5.jpg";
 import slideShow6 from "./public/slider6.jpg";
-import laptopCategory from "./public/laptop_Category.jpg";
+/* import laptopCategory from "./public/laptop_Category.jpg";
 import desktopCategory from "./public/desktop_Category.jpg";
 import monitorCategory from "./public/monitor_Category.jpg";
 import projectorCategory from "./public/projector_Category.jpg";
 import graphicCardCategory from "./public/graphicCard_Category.png";
-import accessoryCategory from "./public/accessory_Category.jpg";
+import accessoryCategory from "./public/accessory_Category.jpg"; */
 import appStorePaymnet from "./public/appStorePaymnet.jpg";
 import googlePlayPaymnet from "./public/googlePlayPaymnet.jpg";
 import cardPayment from "./public/cardPayment.jpg";
@@ -26,7 +25,6 @@ import planet9Brand from "./public/planet9Brand.png";
 import productBanner from "./public/productBanner.jpg";
 import cartBanner from "./public/cartBanner.jpg";
 const images = {
-  loginImage,
   loginBackground,
   slideShow1,
   slideShow2,
@@ -35,11 +33,11 @@ const images = {
   slideShow5,
   slideShow6,
   logo,
-  laptopCategory,
+  /* laptopCategory,
   desktopCategory,
   monitorCategory,
   projectorCategory,
-  accessoryCategory,
+  accessoryCategory, */
   laptopBanner,
   monitorBanner,
   accessoryBanner,
@@ -65,12 +63,12 @@ interface Icategories {
   name: string;
   image: string;
 }
-export const categories: Icategories[] = [
+/* export const categories: Icategories[] = [
   { name: "Laptops", image: laptopCategory.src },
   { name: "Desktops", image: desktopCategory.src },
   { name: "Monitors", image: monitorCategory.src },
   { name: "Projectors", image: projectorCategory.src },
   { name: "Graphic Cards", image: graphicCardCategory.src },
   { name: "Accessories", image: accessoryCategory.src },
-];
+]; */
 export default images;

@@ -185,14 +185,14 @@ const Account = ({ data }: IAccount) => {
                   onChange={handleChange}
                 />
               </Form.Item>
-              <Form.Item label="Date of birth">
+              {/* <Form.Item label="Date of birth">
                 <DateInput
                   type="date"
                   value={userData.date || ''}
                   name="date"
                   onChange={handleChange}
                 />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Upload Avatar">
                 <FileUpload
                   type="file"

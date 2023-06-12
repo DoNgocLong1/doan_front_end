@@ -139,7 +139,6 @@ const FormDisabledDemo: React.FC = () => {
               { required: true, message: "Please select category!" }]}
           >
             <Select
-              name="categoryId"
               value={getProductData.categoryId || ''}
               onChange={handleChange}
             >

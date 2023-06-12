@@ -30,6 +30,7 @@ const Product = () => {
     onScroll()
     return () => window.removeEventListener("scroll", onScroll);
   }, [query]);
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -39,8 +40,8 @@ const Product = () => {
           data-hid="i18n-can"
           rel="canonical"
           href=''
-          />
-          <title>Predator Products</title>
+        />
+        <title>Predator Products</title>
       </Head>
       <Container>
         <Overlay isShow={showSideBar} />

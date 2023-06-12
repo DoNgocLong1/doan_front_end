@@ -26,7 +26,7 @@ import useProduct from "@/hooks/useProduct";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ListItem from "@/components/common/ListItem/ListItem";
-import images, { categories } from "@/images";
+import images from "@/images";
 import SlideShow from "@/components/slideShow";
 import Head from "next/head";
 
@@ -130,7 +130,6 @@ const Home = () => {
         <PopularProductWrapper>
           <PopularProductHeader>
             <PopularProductTitle>Popular Products</PopularProductTitle>
-            <FilterWrapper>brtntnrt</FilterWrapper>
           </PopularProductHeader>
           <ListItem data={popularProductData} />
         </PopularProductWrapper>
