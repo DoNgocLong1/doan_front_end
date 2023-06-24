@@ -94,3 +94,53 @@ export const FeatureWrapper = styled(FlexCenter)`
   font-size: 2em;
   cursor: pointer;
 `;
+export const RenderDataSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  gap: 2em;
+  flex-direction: column;
+`;
+export const DataHeader = styled(RenderDataSection)`
+  padding: 1em;
+  flex-direction: row;
+  background-color: ${color.whiteColor};
+  color: ${color.backgroundItemColor};
+  border-radius: 2em;
+  font-weight: bold;
+`;
+export const DataSection = styled(RenderDataSection)`
+  flex-direction: row;
+  width: 100%;
+  border-radius: 2em;
+  background-color: ${color.backgroundItemColor};
+`;
+export const DataContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  flex-direction: column;
+  width: 100%;
+  padding: 1em;
+  border: 1px solid ${color.whiteColor};
+  border-radius: 2em;
+`;
+export const Wrapper = styled.div`
+  padding: 1em;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const ActionWrapper = styled(Wrapper)`
+  gap: 1em;
+  font-size: 2em;
+`;
+export const Text = styled.p`
+  font-size: 1.5em;
+`;
+export const ImageItem = styled.img`
+  object-fit: contain;
+`;

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "./Navigation.styled";
 interface INavigation {
   totalItem: number;
-  itemPerPage: number;
+  itemPerPage?: number;
 }
 const PaginationBar = ({ totalItem, itemPerPage = 12 }: INavigation) => {
   const { query } = useRouter()

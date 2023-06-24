@@ -26,7 +26,7 @@ const Notification = ({
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
-      <Space onClick={() => openNotification("topRight")}>{button}</Space>
+      <Space onClick={() => openNotification("top")}>{button}</Space>
     </Context.Provider>
   );
 };

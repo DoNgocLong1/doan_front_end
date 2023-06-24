@@ -72,3 +72,13 @@ export const createProductImages = async (formData: IProductImage) => {
     });
   return data;
 };
+export const getProductImages = async (page: number) => {
+  const data = await instance
+    .get(`get-product-image?page=${page}`)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+

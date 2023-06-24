@@ -35,5 +35,24 @@ export const ParameterTextArea = styled.textarea`
   width: 100%;
   height: 50em;
   background-color: ${color.whiteColor};
-  color: ${color.backgroundColor}
+  color: ${color.backgroundColor};
+`;
+export const FlexCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const Wrapper = styled(FlexCenter)`
+  overflow: hidden;
+  flex: 1;
+`;
+export const NameWrapper = styled(FlexCenter)`
+  overflow: hidden;
+  flex: 3;
+`;
+export const ProductFeatureWrapper = styled.div`
+  display: flex;
+  gap: 1em;
+  font-size: 2em;
+  text-align: center;
 `;

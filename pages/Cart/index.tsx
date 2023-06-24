@@ -83,7 +83,6 @@ const Cart = ({ userData }: any) => {
     };
     setAppearSuccess(true)
     await postOrder(formData, token)
-
   };
   if (!cartList.length)
     return (

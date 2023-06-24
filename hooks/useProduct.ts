@@ -21,7 +21,7 @@ const useProduct = () => {
   });
   const minPrice: number = minMaxQuery.data?.data.data.min;
   const maxPrice: number = minMaxQuery.data?.data.data.max;
-  const productData: IProductItem[] = productQuery.data?.data.data.rows;
+  const productData: IProductItem[] = productQuery.data?.data.data.data;
   const popularProductData: IProductItem[] = popularProductQuery.data?.data;
   const totalItem: number = productQuery.data?.data.total;
   const itemPerPage: number = productQuery.data?.data.perPage;

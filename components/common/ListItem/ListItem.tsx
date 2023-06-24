@@ -3,7 +3,7 @@ import { addItem } from "@/features/cart/cartSlice";
 import { CartItemType } from "@/types/cartType.type";
 import { IProductItem, IProductItemData } from "@/types/productType.type";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { Rate } from "antd";
+import { Rate, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -45,6 +45,7 @@ const ListItem = ({
 }: IListItem) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
   const handleAddItem = (payload: any): void => {
     const payloadData: CartItemType = {
       id: payload.id,
@@ -59,6 +60,7 @@ const ListItem = ({
   }
   return (
     <Container>
+      {contextHolder}
       {data.length === 0 &&
         <EmptyItem des="can not find" />
       }

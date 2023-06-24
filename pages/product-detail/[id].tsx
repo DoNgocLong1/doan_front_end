@@ -32,6 +32,8 @@ import { useDispatch } from "react-redux";
 import { addItem } from "@/features/cart/cartSlice";
 import { CartItemType } from "@/types/cartType.type";
 import Head from "next/head";
+import Notification from "@/components/common/Notification/Notification";
+
 
 export const getServerSideProps = async (contexts: any) => {
   const { id } = contexts.query
@@ -121,9 +123,16 @@ const ProductDetail = ({ data }: any) => {
                   {productDetailData.price}
                 </ItemPrice>
               </SpecificationWrapper>
-              <AddToCartButton onClick={handleAddItem}>
-                Add To Cart
-              </AddToCartButton>
+              <Notification
+                button={
+                  <AddToCartButton onClick={handleAddItem}>
+                    Add To Cart
+                  </AddToCartButton>
+                }
+                messageType={"successful"}
+                messageContent={"add to cart succeed"}
+              />
+
             </SpecificationsContainer>
           </ProductInfoWrapper>
         </ProductDetailWrapper>

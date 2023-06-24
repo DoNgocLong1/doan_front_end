@@ -44,15 +44,15 @@ const Admin = () => {
         <Link href="/admin/user">
           <SectionInner>
             <AdminImg src="/admin3.webp" />
-            <Button>User dministrator</Button>
+            <Button>User aministrator</Button>
           </SectionInner>
         </Link>
       </AdminSection>
       <AdminSection>
-        <Link href="/admin/user">
+        <Link href="/admin/product/product-images">
           <SectionInner>
             <AdminImg src="/admin4.webp" />
-            <Button>User dministrator</Button>
+            <Button>Product Image administrator</Button>
           </SectionInner>
         </Link>
       </AdminSection>
@@ -60,7 +60,7 @@ const Admin = () => {
         <Link href="/admin/user">
           <SectionInner>
             <AdminImg src="/admin5.webp" />
-            <Button>User dministrator</Button>
+            <Button>User administrator</Button>
           </SectionInner>
         </Link>
       </AdminSection>

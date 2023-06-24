@@ -22,7 +22,7 @@ export const RegistryWrapper = styled.div`
   gap: 5em;
   justify-content: center;
   align-items: center;
-  padding: 4em 2.5em;
+  padding: 2.5em;
   background-color: ${color.whiteColor};
   border-radius: 2.5em;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

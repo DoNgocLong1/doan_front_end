@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Form,
   Input,
@@ -10,12 +10,17 @@ import {
 import { message } from 'antd';
 
 import { OptionContainer } from '@/styled/Admin.styled';
-import { createProduct } from '@/apiServices/productService';
+import { createProduct, fetchProduct } from '@/apiServices/productService';
 import { useMutation } from 'react-query';
-import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper } from '@/styled/AdminProduct.styled';
+import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper, ProductFeatureWrapper, Wrapper, NameWrapper } from '@/styled/AdminProduct.styled';
 import { IProductAddItem, IProductItem } from '@/types/productType.type';
 import { getCookie } from '@/helper';
 import { getUser } from '@/apiServices/userServices';
+import { Container, EmailWrapper, IdWrapper, UserId, UserItem, UserItemHeader, UserName } from '@/styled/AdminUser.styled';
+import { useRouter } from 'next/router';
+import PaginationBar from '@/components/common/Navigation/Pagination';
+import { FeatureWrapper } from '@/styled/Account.styled';
+import { getProductDetail } from '@/apiServices/productService';
 const { TextArea } = Input;
 export const getServerSideProps = async (contexts: any) => {
   const tokenType = contexts.req.headers.cookie
@@ -34,7 +39,7 @@ export const getServerSideProps = async (contexts: any) => {
 }
 const FormDisabledDemo: React.FC = () => {
   const [previewImg, setPreviewImg] = useState<string>('');
-  const [getProductData, setGetProductData] = useState<IProductItem>({
+  const [productData, setProductData] = useState<IProductItem>({
     id: '',
     categoryId: 0,
     name: '',
@@ -47,6 +52,17 @@ const FormDisabledDemo: React.FC = () => {
     discount: 0,
     sold: 0,
   });
+  const [productGetData, setProductGetData] = useState<IProductItem[]>([])
+  const [count, setCount] = useState<number>(0)
+  const { query } = useRouter();
+  const fetchProductData = async () => {
+    const data: any = await fetchProduct(query || {})
+    setProductGetData(data?.data?.data?.data || [])
+    setCount(+data?.data?.data.count)
+  }
+  useEffect(() => {
+    fetchProductData()
+  }, [query])
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
     messageApi.open({
@@ -82,7 +98,7 @@ const FormDisabledDemo: React.FC = () => {
       discount,
       sold
     } = values
-    const productData: IProductAddItem = {
+    const productFormData: IProductAddItem = {
       name,
       categoryId: Number(categoryId),
       brand,
@@ -94,7 +110,7 @@ const FormDisabledDemo: React.FC = () => {
       discount: Number(discount),
       sold
     };
-    createProductMutation.mutate(productData)
+    createProductMutation.mutate(productFormData)
     //await createProduct(productData)
   };
   const onFinishFailed = (errorInfo: any) => {
@@ -108,13 +124,33 @@ const FormDisabledDemo: React.FC = () => {
       const file = e?.target?.files?.[0]
       const reader = new FileReader()
       reader.onloadend = () => {
-        setGetProductData((userGetData: any) => ({ ...(userGetData), [e.target.name]: reader.result as string }));
+        setProductData((userGetData: any) => ({ ...(userGetData), [e.target.name]: reader.result as string }));
       }
       reader.readAsDataURL(file)
     } else {
-      setGetProductData((userGetData: any) => ({ ...userGetData, [e.target.name]: e.target.value }));
+      setProductData((userGetData: any) => ({ ...userGetData, [e.target.name]: e.target.value }));
     }
   };
+  const handleDeleteProduct = (id: number) => { }
+  const handleSelectProduct = async (id: number) => {
+    const product = await getProductDetail(id.toString())
+    const productFetchData = product?.data?.product || {}
+    console.log(product?.data?.product)
+    const formData = {
+      id: productFetchData.id,
+      categoryId: productFetchData.categoryId,
+      name: productFetchData.name,
+      brand: productFetchData.brand,
+      rate: productFetchData.rate,
+      price: productFetchData.price,
+      description: productFetchData.description,
+      parameter: productFetchData.parameter,
+      quantityInStock: productFetchData.quantityInStock,
+      discount: productFetchData.discount,
+      sold: productFetchData.sold,
+    }
+  }
+  const handleUpdateProduct = () => { }
   return (
     <>
       <OptionContainer>
@@ -129,17 +165,17 @@ const FormDisabledDemo: React.FC = () => {
             <Input
               placeholder='Product name'
               name="name"
-              value={getProductData.name || ''}
+              value={productData.name || ''}
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item
-            label="Select"
+            label="Category"
             rules={[
               { required: true, message: "Please select category!" }]}
           >
             <Select
-              value={getProductData.categoryId || ''}
+              value={productData.categoryId || ''}
               onChange={handleChange}
             >
               <Select.Option value="1">Laptops</Select.Option>
@@ -154,7 +190,7 @@ const FormDisabledDemo: React.FC = () => {
             <Input
               placeholder='Brand name'
               name="brand"
-              value={getProductData.brand || ''}
+              value={productData.brand || ''}
               onChange={handleChange}
             />
           </Form.Item>
@@ -168,21 +204,21 @@ const FormDisabledDemo: React.FC = () => {
             <Input
               placeholder='Price'
               name="price"
-              value={getProductData.price || ''}
+              value={productData.price || ''}
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item label="Description">
             <Input placeholder='Product preview'
               name="description"
-              value={getProductData.description || ''}
+              value={productData.description || ''}
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item label="Product detail">
             <TextArea rows={4}
               name="parameter"
-              value={getProductData.parameter || ''}
+              value={productData.parameter || ''}
               onChange={handleChange}
             />
           </Form.Item>
@@ -195,25 +231,25 @@ const FormDisabledDemo: React.FC = () => {
           >
             <Input placeholder='Quantity in stock'
               name="quantityInStock"
-              value={getProductData.quantityInStock || ''}
+              value={productData.quantityInStock || ''}
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item label="Rate">
             <Input placeholder='Rate'
               name="rate"
-              value={getProductData.rate || ''}
+              value={productData.rate || ''}
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item label="Discount">
             <Input placeholder='Discount'
               name="discount"
-              value={getProductData.discount || ''}
+              value={productData.discount || ''}
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item label="Upload">
+          {/* <Form.Item label="Upload">
             <FileUpload
               type="file"
               id="file"
@@ -234,11 +270,119 @@ const FormDisabledDemo: React.FC = () => {
 
               </AddIcon>
             </PreviewImageWrapper>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="Button" >
             <Button htmlType="submit">Add product</Button>
           </Form.Item>
         </Form>
+        <Container>
+          <UserItemHeader>
+            <IdWrapper>
+              <UserId>ID</UserId>
+            </IdWrapper>
+            <NameWrapper>
+              <UserId>
+                Name
+              </UserId>
+            </NameWrapper>
+            <Wrapper>
+              <UserId>
+                Category
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Brand
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Price
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Description
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Quantity
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Rate
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Discount
+              </UserId>
+            </Wrapper>
+            <Wrapper>
+              <UserId>
+                Feature
+              </UserId>
+            </Wrapper>
+          </UserItemHeader>
+          {productGetData?.map((item: any) => (
+            <UserItem key={item?.id}>
+              <IdWrapper>
+                <UserId>{item?.id || 0}</UserId>
+              </IdWrapper>
+              <NameWrapper>
+                <UserId>
+                  {item?.name || ''}
+                </UserId>
+              </NameWrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.categoryId || 0}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.brand || ''}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.price || 0}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.description || ''}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.quantityInStock || 0}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.rate || 0}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <UserId>
+                  {item?.discount || 0}
+                </UserId>
+              </Wrapper>
+              <Wrapper>
+                <ProductFeatureWrapper>
+                  <EditOutlined onClick={() => handleSelectProduct(item?.id || 0)} />
+                  <DeleteOutlined onClick={() => handleDeleteProduct(item?.id || 0)} />
+                </ProductFeatureWrapper>
+              </Wrapper>
+            </UserItem>
+          ))}
+        </Container>
+        <PaginationBar
+          totalItem={count}
+        />
       </OptionContainer>
     </>
   );

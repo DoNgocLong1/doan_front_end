@@ -39,7 +39,7 @@ import {
   UserName,
 } from "./Header.styled";
 import useShowDropDown from "@/hooks/useShowDropDown";
-import { getCookie } from "@/helper";
+import { getCookie, setCookie } from "@/helper";
 const Logout = ({ setIsLogin }: any) => {
   const { isAuthenticated } = useSelector(selectAuth);
   const router = useRouter();
@@ -47,6 +47,7 @@ const Logout = ({ setIsLogin }: any) => {
   const handleLogout = async () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    setCookie('token', '')
     dispatch(logout(!isAuthenticated));
     setIsLogin(false)
     router.push("/");
@@ -123,6 +124,7 @@ const Header = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const getToken = localStorage.getItem('token') || ''
+      console.log(getToken)
       if (getToken) {
         setToken(getToken)
         setIsLogin(true)

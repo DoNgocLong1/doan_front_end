@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   ItemDetailName,
@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import { selectAuth } from "@/features/auth/authSlice";
 import { useRouter } from "next/router";
 import useShowDropDown from "@/hooks/useShowDropDown";
+import Notification from "@/components/Notification";
+import { message } from "antd";
 const ListItemLite = () => {
   const router = useRouter()
   const {
@@ -37,53 +39,65 @@ const ListItemLite = () => {
     totalPrice,
   } = useCart();
   const { isShowCart, handleShowCart } = useShowDropDown();
-
+  const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated } = useSelector(selectAuth);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
   const onOrder = async () => {
-    router.push('/cart')
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/cart')
+    } else {
+      messageApi.open({
+        type: 'error',
+        content: `You' re not login yet! please login to view cart`,
+      });
+    }
     handleShowCart()
   };
   return (
-    <Container>
-      <PropDownTitle>Your cart</PropDownTitle>
-      <PropDownListItemWrapper>
-        {cartList.length === 0 ? (
-          <EmptyItem
-            des="Your Cart is empty"
-          />
-        ) : (
-          cartList.map((item: any, index: number) => (
-            <PropDownItemWrapper key={index}>
-              <RemoveButton onClick={() => handleRemove(item)}>
-                <CloseOutlined />
-              </RemoveButton>
-              <ItemImg src={item?.img || ''} alt={item.name} title={item.name} width="175" height="175" />
-              <ItemDetailWrapper>
-                <ItemDetailName>{item.name}</ItemDetailName>
-                <ItemDetailPrice>{item.price}$/1</ItemDetailPrice>
-                <QuantityWrapper>
-                  <QuantityButton onClick={() => handleAddItem(item)}>
-                    <PlusOutlined />
-                  </QuantityButton>
-                  <ItemDetailQuantity>{item.count} x</ItemDetailQuantity>
-                  <QuantityButton onClick={() => handleDecreaseItem(item)}>
-                    <MinusOutlined />
-                  </QuantityButton>
-                </QuantityWrapper>
-                <ItemDetailPrice>{item.total} $</ItemDetailPrice>
-              </ItemDetailWrapper>
-            </PropDownItemWrapper>
-          ))
-        )}
-      </PropDownListItemWrapper>
-      <ItemFooter>
-        <ItemFooterWrapper>
-          <ItemFooterTitle>Total: </ItemFooterTitle>
-          <ItemFooterContent> {totalPrice}$</ItemFooterContent>
-        </ItemFooterWrapper>
-        <ItemFooterButton onClick={onOrder}>View cart</ItemFooterButton>
-      </ItemFooter>
-    </Container>
+    <>
+      {contextHolder}
+      <Container>
+        <PropDownTitle>Your cart</PropDownTitle>
+        <PropDownListItemWrapper>
+          {cartList.length === 0 ? (
+            <EmptyItem
+              des="Your Cart is empty"
+            />
+          ) : (
+            cartList.map((item: any, index: number) => (
+              <PropDownItemWrapper key={index}>
+                <RemoveButton onClick={() => handleRemove(item)}>
+                  <CloseOutlined />
+                </RemoveButton>
+                <ItemImg src={item?.img || ''} alt={item.name} title={item.name} width="175" height="175" />
+                <ItemDetailWrapper>
+                  <ItemDetailName>{item.name}</ItemDetailName>
+                  <ItemDetailPrice>{item.price}$/1</ItemDetailPrice>
+                  <QuantityWrapper>
+                    <QuantityButton onClick={() => handleAddItem(item)}>
+                      <PlusOutlined />
+                    </QuantityButton>
+                    <ItemDetailQuantity>{item.count} x</ItemDetailQuantity>
+                    <QuantityButton onClick={() => handleDecreaseItem(item)}>
+                      <MinusOutlined />
+                    </QuantityButton>
+                  </QuantityWrapper>
+                  <ItemDetailPrice>{item.total} $</ItemDetailPrice>
+                </ItemDetailWrapper>
+              </PropDownItemWrapper>
+            ))
+          )}
+        </PropDownListItemWrapper>
+        <ItemFooter>
+          <ItemFooterWrapper>
+            <ItemFooterTitle>Total: </ItemFooterTitle>
+            <ItemFooterContent> {totalPrice}$</ItemFooterContent>
+          </ItemFooterWrapper>
+          <ItemFooterButton onClick={onOrder}>View cart</ItemFooterButton>
+        </ItemFooter>
+      </Container>
+    </>
   );
 };
 

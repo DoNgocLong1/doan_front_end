@@ -109,13 +109,14 @@ export const ItemName = styled.th`
 `;
 export const ProductNameAndImgWrapper = styled.div`
   display: flex;
+  gap: 2em;
 `;
 export const ProductName = styled.p`
   font-size: 1.3em;
 `;
 export const ProductImg = styled.img`
   width: 5em;
-  object-fit: cover;
+  object-fit: contain;
 `;
 export const ProductUnitPrice = styled(ProductName)``;
 export const ProductQuantity = styled(ProductName)`

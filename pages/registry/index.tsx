@@ -19,6 +19,7 @@ import Head from "next/head";
 import { createUser } from "@/apiServices/userServices";
 import { IFetchUserData, IUserCreateData, IUserData } from '@/types/index.type';
 import Notification from "@/components/Notification";
+import Link from "next/link";
 const Registry = () => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
@@ -138,9 +139,17 @@ const Registry = () => {
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <ButtonWrapper name="submit" wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit">
-                Submit
+                Registry
               </Button>
             </ButtonWrapper>
+            <ButtonWrapper name="submit" wrapperCol={{ offset: 8, span: 16 }}>
+              <Link href="/login">
+                <Button type="primary" htmlType="submit">
+                  Login
+                </Button>
+              </Link>
+            </ButtonWrapper>
+
           </Form>
         </RegistryWrapper>
       </Container>
