@@ -78,7 +78,7 @@ export const ItemImageWrapper = styled.div`
   }
 `;
 export const ItemImage = styled.img`
-  width: 70%;
+  width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   transition: ease 0.25s;

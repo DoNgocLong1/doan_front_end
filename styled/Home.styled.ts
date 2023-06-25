@@ -14,6 +14,12 @@ export const Container = styled.div`
     font-size: 5px;
   }
 `;
+export const Heading = styled.h1`
+  font-size: 2em;
+  color: ${color.whiteColor};
+  padding-left: 1.5em;
+  padding-top: 1.5em;
+`;
 export const BannerWrapper = styled.div`
   margin-top: 2em;
   display: flex;
@@ -48,7 +54,7 @@ export const BannerDescription = styled.div`
   color: #fff;
   z-index: 2;
 `;
-export const BannerTitle = styled.h1`
+export const BannerTitle = styled.p`
   font-size: 2em;
 `;
 export const BannerContent = styled.p`

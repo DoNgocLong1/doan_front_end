@@ -95,18 +95,18 @@ const ProductSideBar = ({ showSideBar }: any) => {
         </SideBarButton>,
         "6"
       ),
-      getItem(
-        <Slider
-          range={{ draggableTrack: true }}
-          defaultValue={[minPrice, maxPrice]}
-          min={minPrice}
-          max={maxPrice}
-          onChange={(e: any) =>
-            twoKeysTransmissionParams("price_from", e[0], "price_to", e[1])
-          }
-        />,
-        "7"
-      ),
+      /*       getItem(
+              <Slider
+                range={{ draggableTrack: true }}
+                defaultValue={[minPrice, maxPrice]}
+                min={minPrice}
+                max={maxPrice}
+                onChange={(e: any) =>
+                  twoKeysTransmissionParams("price_from", e[0], "price_to", e[1])
+                }
+              />,
+              "7"
+            ), */
     ]),
   ];
   const [categoryActive, setCategoryActive] = useState<number>(+(router?.query?.category || 0));

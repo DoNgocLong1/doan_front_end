@@ -56,3 +56,10 @@ export const ProductFeatureWrapper = styled.div`
   font-size: 2em;
   text-align: center;
 `;
+export const SelectCategory = styled.select`
+  font-size: 1.2em;
+  padding: 0.3em;
+  width: 100%;
+`;
+export const OptionCategory = styled.option`
+`;

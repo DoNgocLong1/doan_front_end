@@ -10,9 +10,9 @@ import {
 import { message } from 'antd';
 
 import { OptionContainer } from '@/styled/Admin.styled';
-import { createProduct, fetchProduct } from '@/apiServices/productService';
+import { createProduct, deleteProduct, fetchProduct, updateProduct } from '@/apiServices/productService';
 import { useMutation } from 'react-query';
-import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper, ProductFeatureWrapper, Wrapper, NameWrapper } from '@/styled/AdminProduct.styled';
+import { AddIcon, FileUpload, PreviewImage, PreviewImageWrapper, ProductFeatureWrapper, Wrapper, NameWrapper, SelectCategory, OptionCategory } from '@/styled/AdminProduct.styled';
 import { IProductAddItem, IProductItem } from '@/types/productType.type';
 import { getCookie } from '@/helper';
 import { getUser } from '@/apiServices/userServices';
@@ -41,7 +41,7 @@ const FormDisabledDemo: React.FC = () => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [productData, setProductData] = useState<IProductItem>({
     id: '',
-    categoryId: 0,
+    categoryId: '0',
     name: '',
     brand: '',
     rate: 0,
@@ -52,6 +52,17 @@ const FormDisabledDemo: React.FC = () => {
     discount: 0,
     sold: 0,
   });
+  const [scroll, setScroll] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scroll]);
+  console.log(productData)
   const [productGetData, setProductGetData] = useState<IProductItem[]>([])
   const [count, setCount] = useState<number>(0)
   const { query } = useRouter();
@@ -85,30 +96,18 @@ const FormDisabledDemo: React.FC = () => {
     },
     mutationFn: (productData: any) => createProduct(productData)
   })
-  const onFinish = async (values: any) => {
-    const {
-      name,
-      categoryId,
-      brand,
-      price,
-      description,
-      parameter,
-      quantityInStock,
-      rate,
-      discount,
-      sold
-    } = values
+  const onFinish = () => {
     const productFormData: IProductAddItem = {
-      name,
-      categoryId: Number(categoryId),
-      brand,
-      price,
-      description,
-      parameter,
-      quantityInStock,
-      rate: Number(rate),
-      discount: Number(discount),
-      sold
+      name: productData.name,
+      categoryId: Number(productData.categoryId),
+      brand: productData.brand,
+      price: productData.price,
+      description: productData.description,
+      parameter: productData.parameter,
+      quantityInStock: productData.quantityInStock,
+      rate: Number(productData.rate),
+      discount: Number(productData.discount),
+      sold: productData.sold
     };
     createProductMutation.mutate(productFormData)
     //await createProduct(productData)
@@ -131,8 +130,44 @@ const FormDisabledDemo: React.FC = () => {
       setProductData((userGetData: any) => ({ ...userGetData, [e.target.name]: e.target.value }));
     }
   };
-  const handleDeleteProduct = (id: number) => { }
+  const UpdateProductMutation: any = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'Update product success',
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'Update product failed',
+      });
+    },
+    mutationFn: (userData: any) => updateProduct(userData)
+  })
+  const deleteProductMutation: any = useMutation({
+    onSuccess: () => {
+      messageApi.open({
+        type: 'success',
+        content: 'delete product success',
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: 'error',
+        content: 'delete product failed',
+      });
+    },
+    mutationFn: (id: number) => deleteProduct({ id })
+  })
+  const handleDeleteProduct = (id: number) => {
+    deleteProductMutation.mutate(id)
+    setTimeout(() => {
+      fetchProductData()
+    }, 1000)
+  }
   const handleSelectProduct = async (id: number) => {
+    setIsEdit(true)
     const product = await getProductDetail(id.toString())
     const productFetchData = product?.data?.product || {}
     console.log(product?.data?.product)
@@ -149,8 +184,15 @@ const FormDisabledDemo: React.FC = () => {
       discount: productFetchData.discount,
       sold: productFetchData.sold,
     }
+    setProductData(formData)
+    setScroll(!scroll);
   }
-  const handleUpdateProduct = () => { }
+  const handleUpdateProduct = () => {
+    UpdateProductMutation.mutate(productData)
+    setTimeout(() => {
+      fetchProductData()
+    }, 1000)
+  }
   return (
     <>
       <OptionContainer>
@@ -174,17 +216,17 @@ const FormDisabledDemo: React.FC = () => {
             rules={[
               { required: true, message: "Please select category!" }]}
           >
-            <Select
-              value={productData.categoryId || ''}
+            <SelectCategory
+              value={productData.categoryId || '1'}
               onChange={handleChange}
             >
-              <Select.Option value="1">Laptops</Select.Option>
-              <Select.Option value="2">Desktops</Select.Option>
-              <Select.Option value="3">Monitors</Select.Option>
-              <Select.Option value="4">Projectors</Select.Option>
-              <Select.Option value="5">Graphic cards</Select.Option>
-              <Select.Option value="6">Accessories</Select.Option>
-            </Select>
+              <OptionCategory value="1">Laptops</OptionCategory>
+              <OptionCategory value="2">Desktops</OptionCategory>
+              <OptionCategory value="3">Monitors</OptionCategory>
+              <OptionCategory value="4">Projectors</OptionCategory>
+              <OptionCategory value="5">Graphic cards</OptionCategory>
+              <OptionCategory value="6">Accessories</OptionCategory>
+            </SelectCategory>
           </Form.Item>
           <Form.Item label="Brand">
             <Input
@@ -272,7 +314,7 @@ const FormDisabledDemo: React.FC = () => {
             </PreviewImageWrapper>
           </Form.Item> */}
           <Form.Item label="Button" >
-            <Button htmlType="submit">Add product</Button>
+            {!isEdit ? <Button onClick={onFinish}>Add product</Button> : <Button onClick={handleUpdateProduct}>Edit product</Button>}
           </Form.Item>
         </Form>
         <Container>

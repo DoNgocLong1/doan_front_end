@@ -74,20 +74,22 @@ const ListItem = ({
           <ItemWrapper key={index}>
             {item.discount > 0 && <Discount>-{item.discount}%</Discount>}
             <ItemImageWrapper>
-              <ItemImage
-                src={item?.Image_Products?.image}
-                alt={item.name}
-                title={item.name}
-                width="200"
-                height="200"
-              />
-              <ProductActionWrapper>
+              <Link href={`/product-detail/${item.id}`}>
+                <ItemImage
+                  src={item?.Image_Products?.image}
+                  alt={item.name}
+                  title={item.name}
+                  width="200"
+                  height="200"
+                />
+              </Link>
+              {/* <ProductActionWrapper>
                 <ProductAction>
                   <HeartOutlined style={{ fontSize: "3em", color: "orange" }} />
                 </ProductAction>
                 <ProductAction></ProductAction>
                 <ProductAction></ProductAction>
-              </ProductActionWrapper>
+              </ProductActionWrapper> */}
             </ItemImageWrapper>
             <Link href={`/product-detail/${item.id}`}>
               <ItemName

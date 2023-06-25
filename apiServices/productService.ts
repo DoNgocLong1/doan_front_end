@@ -54,6 +54,24 @@ export const createProduct = async (formData: any) => {
     });
   return data;
 };
+export const updateProduct = async (formData: any) => {
+  const data = await instance
+    .post(`update-product`, formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
+export const deleteProduct = async (formData: any) => {
+  const data = await instance
+    .post(`delete-product`, formData)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+  return data;
+};
 export const updateProductImages = async (formData: IProductImage) => {
   const data = await instance
     .post(`update-product-image`, formData)

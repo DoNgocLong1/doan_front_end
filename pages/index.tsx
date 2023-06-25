@@ -14,6 +14,7 @@ import {
   CategoryTitle,
   Container,
   FilterWrapper,
+  Heading,
   PopularProductHeader,
   PopularProductTitle,
   PopularProductWrapper,
