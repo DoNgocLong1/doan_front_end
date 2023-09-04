@@ -54,6 +54,7 @@ const OrderHistory = ({ productData, OrderInfo, userData }: IOrderHistory) => {
   useEffect(() => {
     test()
   }, []) */
+  console.log(OrderInfo)
   const [messageApi, contextHolder] = message.useMessage();
   const purchaseAgainMutation: any = useMutation({
     onSuccess: () => {

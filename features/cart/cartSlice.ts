@@ -29,9 +29,9 @@ const cartSlice = createSlice({
         state.cartList = [newItem, ...state.cartList];
       } else {
         existingItem.count++;
-        existingItem.total += action.payload.price;
+        existingItem.total += +action.payload.price;
       }
-      state.totalPrice += action.payload.price;
+      state.totalPrice += +action.payload.price;
       state.listLength++;
     },
     removeItem(state: IInitialState, action: PayloadAction<ICartList>) {
@@ -39,7 +39,7 @@ const cartSlice = createSlice({
         return cart.id === action.payload.id;
       });
       state.cartList.splice(state.cartList.indexOf(removeItem), 1);
-      state.totalPrice -= removeItem.total;
+      state.totalPrice -= +removeItem.total;
       state.listLength -= removeItem.count;
     },
     decreaseItem(state: IInitialState, action: PayloadAction<ICartList>) {
@@ -50,7 +50,7 @@ const cartSlice = createSlice({
         state.cartList.splice(state.cartList.indexOf(existingItem), 1);
       }
       existingItem.count--;
-      existingItem.total -= action.payload.price;
+      existingItem.total -= +action.payload.price;
       state.listLength--;
       state.totalPrice -= existingItem.price;
     },
@@ -63,6 +63,10 @@ const cartSlice = createSlice({
       const listLength = action.payload.reduce((count: number, item: any) => {
         return count += item.count
       }, 0)
+      const amount = action.payload.reduce((total: number, item: any) => {
+        return total += (item.count * item.price)
+      }, 0)
+      state.totalPrice = amount
       state.listLength = listLength
       state.cartList = [...action.payload]
     },

@@ -13,6 +13,7 @@ import Notification from "../Notification/Notification";
 import {
   AddButton,
   Container,
+  Count,
   Discount,
   ItemBottom,
   ItemImage,
@@ -73,6 +74,7 @@ const ListItem = ({
         {data?.map((item: IProductItemData, index) => (
           <ItemWrapper key={index}>
             {item.discount > 0 && <Discount>-{item.discount}%</Discount>}
+            {item.count && <Count>x{item.count}</Count>}
             <ItemImageWrapper>
               <Link href={`/product-detail/${item.id}`}>
                 <ItemImage
@@ -102,7 +104,7 @@ const ListItem = ({
               <RateNumber>({item.rate})</RateNumber>
             </RateWrapper>
             <ItemBottom>
-              <ItemPrice>{item.price} $</ItemPrice>
+              <ItemPrice>{item?.price || 1000} $</ItemPrice>
               <Notification
                 button={
                   <AddButton onClick={() => handleAddItem(item)}>

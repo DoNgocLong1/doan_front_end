@@ -1,19 +1,22 @@
 import React from 'react';
 
-const Notification = ({ isActive, headerText, mainContent, buttonText, href, onClick }: any) => {
+const Notification = ({ isActive, headerText, mainContent, buttonText, href, onClick, cancel }: any) => {
   return (
     <>
       <div className={`coating ${isActive && 'active'}`}></div>
       <div className={`notification flex-column ${isActive && 'active'}`}>
         <p className="notification-header">{headerText}</p>
         <p>{mainContent}</p>
-        {href ? (
-          <a href={href} title={buttonText}>
-            <button>{buttonText}</button>
-          </a>
-        ) : (
-          <button onClick={onClick}>{buttonText}</button>
-        )}
+        <div className="buttonWrapper">
+          {href ? (
+            <a href={href} title={buttonText}>
+              <button>{buttonText}</button>
+            </a>
+          ) : (
+            <button onClick={onClick}>{buttonText}</button>
+          )}
+          {cancel && <button className='cancel' onClick={cancel}>Cancel</button>}
+        </div>
       </div>
       <style jsx>
         {`
@@ -68,9 +71,19 @@ const Notification = ({ isActive, headerText, mainContent, buttonText, href, onC
             cursor: pointer;
             border-radius: 15px;
           }
+          .cancel {
+            border: 1pc solid #fff;
+            background-color: transparent;
+            color: #fff;
+          }
           .notification-header {
             font-weight:bold;
             font-size: 2em;
+          }
+          .buttonWrapper {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
           }
         `}
       </style>

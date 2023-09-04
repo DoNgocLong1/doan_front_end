@@ -72,9 +72,12 @@ export const AdminImg = styled.img`
 `;
 export const Button = styled.button`
   position: absolute;
-  right: 1em;
-  bottom: 1em;
+  /* right: 1em;
+  bottom: 1em; */
   font-size: 1.5em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: initial;
   border: 0.1em solid ${color.whiteColor};
   border-radius: 0.5em;

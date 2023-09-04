@@ -53,7 +53,8 @@ const OrderHistory = ({ data }: IOrderHistory) => {
 
   const handleGetOrderDetail = async (id: number) => {
     const item: any = await getProductsOrder(id)
-    const products = item?.data?.data || []
+    const products = item?.data?.data.orderList || []
+    console.log(products)
     const productsArray = products.reduce((array: any, item: any) => {
       return array = [...array, {
         img: item.Image_Products[0].image,

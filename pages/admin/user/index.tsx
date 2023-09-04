@@ -208,6 +208,7 @@ const AdminUser = () => {
           mainContent={`Delete account has id ${userId} ?`}
           buttonText="Ok"
           onClick={handleDeleteUser}
+          cancel={() => setIsDelete(!isDelete)}
         />
         <Notification
           isActive={isAdmin}

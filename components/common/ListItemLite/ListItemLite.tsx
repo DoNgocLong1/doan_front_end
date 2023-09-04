@@ -38,6 +38,7 @@ const ListItemLite = () => {
     orderList,
     totalPrice,
   } = useCart();
+  console.log('cartList', cartList)
   const { isShowCart, handleShowCart } = useShowDropDown();
   const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated } = useSelector(selectAuth);
@@ -83,7 +84,7 @@ const ListItemLite = () => {
                       <MinusOutlined />
                     </QuantityButton>
                   </QuantityWrapper>
-                  <ItemDetailPrice>{item.total} $</ItemDetailPrice>
+                  <ItemDetailPrice>{+item.price * Number(item.count)} $</ItemDetailPrice>
                 </ItemDetailWrapper>
               </PropDownItemWrapper>
             ))

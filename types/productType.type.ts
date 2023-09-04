@@ -42,6 +42,7 @@ export interface IProductItemData {
   quantityInStock: number;
   discount: number
   sold: number,
+  count?: number;
   Image_Products?: IImageProduct,
 }
 export interface IdataCategory {

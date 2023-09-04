@@ -188,3 +188,13 @@ export const Discount = styled.div`
   justify-content: center;
   align-items: center;
 `;
+export const Count = styled.div`
+  font-size: 2.5em;
+  color: ${color.whiteColor};
+  z-index: 2;
+  position: absolute;
+  padding: 0.7em 1.5em;
+  padding: 0.7em 1.5em;
+  top: -0.5em;
+  right: -0.5em;
+`;

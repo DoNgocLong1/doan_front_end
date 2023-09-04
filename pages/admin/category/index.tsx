@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategories, selectCategory } from '@/features/admin/categorySlice';
 import { getCookie } from '@/helper';
 import { getUser } from '@/apiServices/userServices';
+import Notification from '@/components/Notification';
 
 export const getServerSideProps = async (contexts: any) => {
   const tokenType = contexts.req.headers.cookie
@@ -39,11 +40,21 @@ export const getServerSideProps = async (contexts: any) => {
 }
 const AdminCategory: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [scroll, setScroll] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [userId, setUserId] = useState<number | null>(null);
   const [categoryGetData, setCategoryGetData] = useState<IdataCategory>({
     id: 0,
     name: '',
     image: ''
   });
+  useEffect(() => {
+    const onScroll = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scroll]);
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const createCategoryMutation: any = useMutation({
     onSuccess: () => {
@@ -112,8 +123,9 @@ const AdminCategory: React.FC = () => {
       fetchCategoryData()
     }, 1000)
   };
-  const handleDeleteCategory = (id: number) => {
-    deleteCategoryMutation.mutate(id)
+  const handleDeleteCategory = () => {
+    deleteCategoryMutation.mutate(userId)
+    setIsDelete(false);
     setTimeout(() => {
       fetchCategoryData()
     }, 1000)
@@ -133,6 +145,7 @@ const AdminCategory: React.FC = () => {
   }
   const handleSelectCategory = async (id: number) => {
     setIsEdit(true)
+    setScroll(!scroll)
     const fetchCategoryData: any = await getCategory(id)
     const { name, image } = fetchCategoryData?.data?.data || {};
     setCategoryGetData({
@@ -154,10 +167,21 @@ const AdminCategory: React.FC = () => {
     }
 
   };
+  const handleSetDeleteCategory = async (id: number) => {
+    setUserId(id);
+    setIsDelete(true);
+  }
   return (
     <>
       <OptionContainer>
-        {contextHolder}
+        <Notification
+          isActive={isDelete}
+          headerText="Administration Warning"
+          mainContent={`Delete category has id ${userId} ?`}
+          buttonText="Ok"
+          onClick={handleDeleteCategory}
+          cancel={() => setIsDelete(!isDelete)}
+        />
         <Form
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -234,7 +258,7 @@ const AdminCategory: React.FC = () => {
               </ImageWrapper>
               <FeatureWrapper>
                 <EditOutlined onClick={() => handleSelectCategory(item?.id)} />
-                <DeleteOutlined onClick={() => handleDeleteCategory(item?.id)} />
+                <DeleteOutlined onClick={() => handleSetDeleteCategory(item?.id)} />
               </FeatureWrapper>
             </CategoryItem>
           ))}

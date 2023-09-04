@@ -25,6 +25,14 @@ const Admin = () => {
   return (
     <AdminContainer>
       <AdminSection>
+        <Link href="/admin/user">
+          <SectionInner>
+            <AdminImg src="/admin3.webp" />
+            <Button>User aministrator</Button>
+          </SectionInner>
+        </Link>
+      </AdminSection>
+      <AdminSection>
         <Link href="/admin/category">
           <SectionInner>
             <AdminImg src="/admin2.webp" />
@@ -41,14 +49,6 @@ const Admin = () => {
         </Link>
       </AdminSection>
       <AdminSection>
-        <Link href="/admin/user">
-          <SectionInner>
-            <AdminImg src="/admin3.webp" />
-            <Button>User aministrator</Button>
-          </SectionInner>
-        </Link>
-      </AdminSection>
-      <AdminSection>
         <Link href="/admin/product/product-images">
           <SectionInner>
             <AdminImg src="/admin4.webp" />
@@ -56,14 +56,14 @@ const Admin = () => {
           </SectionInner>
         </Link>
       </AdminSection>
-      <AdminSection>
+      {/* <AdminSection>
         <Link href="/admin/user">
           <SectionInner>
             <AdminImg src="/admin5.webp" />
             <Button>User administrator</Button>
           </SectionInner>
         </Link>
-      </AdminSection>
+      </AdminSection> */}
 
     </AdminContainer>
   )

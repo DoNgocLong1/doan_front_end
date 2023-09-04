@@ -225,7 +225,7 @@ const Cart = ({ userData }: any) => {
                 <SubTotalTitle>Subtotal:</SubTotalTitle>
                 <SubTotal>{totalPrice} $</SubTotal>
               </NoteWrapper>
-              <Form.Item
+              {/* <Form.Item
                 name="paymentMethod"
                 rules={[{ required: true, message: 'Please pick an item!' }]}
               >
@@ -233,7 +233,7 @@ const Cart = ({ userData }: any) => {
                   <Radio value="0">payment when receive</Radio>
                   <Radio value="1">payment now</Radio>
                 </Radio.Group>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item>
                 <PaymentButton type="submit">Payment</PaymentButton>
               </Form.Item>
